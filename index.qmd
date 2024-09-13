@@ -1,6 +1,6 @@
 ---
 title: "Charlotte Imbert"
-image: /Users/charlotteimbert/Documents/kitten.jpg
+image: Users/charlotteimbert/Documents/kitten.jpg
 toc: false
 about: 
  template: jolla
