@@ -1,0 +1,10 @@
+---
+title: "Olympics"
+description: |
+  Analyzing 120 years of Olympics data from TidyTuesday
+author: Charlotte Imbert
+date: September 13, 2024
+format: html
+---
+
+Hello
