@@ -4,7 +4,7 @@
     "href": "olympics.html",
     "title": "Olympics",
     "section": "",
-    "text": "Hello"
+    "text": "Data for this analysis was accessed from https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27 . Data was scraped from www.sports-reference.com in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.\n\nlibrary(tidytuesdayR)\nlibrary(tidyverse)\nolympics &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')\n\n\nggplot(olympics, aes(x=year, y=age))+\n  geom_point(aes(color=sex))+\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nggplot(olympics, aes(x=age))+\n  geom_histogram(aes(fill=sex))+\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nolympics_nona &lt;- olympics[!is.na(olympics$age), ]\nolympics_meanage&lt;-olympics_nona%&gt;%\n  group_by(year)%&gt;%\n  summarize(avg_age=(mean(age)))\n\n\nggplot(olympics_meanage, aes(x=year, y=avg_age)) +\n  geom_point(shape=16, size=2, color=\"goldenrod4\") +\n  geom_smooth(color=\"#90EE90\", fill=\"#90EE90\", se=FALSE)+\n  theme_minimal()+\n  labs(title = \"Mean Age of Athletes at the Olympics\",\n       subtitle = \"1896 to 2016\",\n       x=\"Olympic Year\",\n       y=\"Mean Age\")"
   },
   {
     "objectID": "index.html",

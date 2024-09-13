@@ -7,4 +7,40 @@ date: September 13, 2024
 format: html
 ---
 
-Hello
+Data for this analysis was accessed from <https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27> . Data was scraped from [www.sports-reference.com](http://www.sports-reference.com/) in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.
+
+```{r message=FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
+```
+
+```{r warning=FALSE, message=FALSE}
+ggplot(olympics, aes(x=year, y=age))+
+  geom_point(aes(color=sex))+
+  theme_minimal()
+```
+
+```{r warning=FALSE, message=FALSE}
+ggplot(olympics, aes(x=age))+
+  geom_histogram(aes(fill=sex))+
+  theme_minimal()
+```
+
+```{r warning=FALSE, message=FALSE}
+olympics_nona <- olympics[!is.na(olympics$age), ]
+olympics_meanage<-olympics_nona%>%
+  group_by(year)%>%
+  summarize(avg_age=(mean(age)))
+```
+
+```{r warning=FALSE, message=FALSE}
+ggplot(olympics_meanage, aes(x=year, y=avg_age)) +
+  geom_point(shape=16, size=2, color="goldenrod4") +
+  geom_smooth(color="#90EE90", fill="#90EE90", se=FALSE)+
+  theme_minimal()+
+  labs(title = "Mean Age of Athletes at the Olympics",
+       subtitle = "1896 to 2016",
+       x="Olympic Year",
+       y="Mean Age")
+```
