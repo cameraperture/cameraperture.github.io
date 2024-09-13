@@ -3,12 +3,17 @@ project:
   output-dir: docs
 
 website:
-  title: "cameraperture.github.io"
+  title: "Charlotte Imbert"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - text: "About Me"
+        href: index.qmd
+      - text: "Data Viz"
+        menu: 
+         - text: "Olympics"
+           href: olympics.html
+         - text: "Premier League"
+           href: premierleague.html
 
 format:
   html:
