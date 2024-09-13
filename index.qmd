@@ -1,11 +1,20 @@
 ---
-title: "cameraperture.github.io"
+title: "Charlotte Imbert"
+image: /Users/charlotteimbert/Documents/kitten.jpg
+toc: false
+about: 
+ template: jolla
+ image-shape: rectangle
+ image-width: 15em
+ links:
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/charlotte-imbert-491a051a5
+    - text: GitHub
+      href: https://github.com/cameraperture
+    - text: Email
+      href: mailto:ciaa2020@mymail.pomona.edu
 ---
 
-This is a Quarto website.
+Welcome! My name is Charlotte Imbert and I'm an undergraduate student at Pomona College. I am majoring in Neuroscience with a minor in Math. I love Statistics and ML and am currently working on a research project aiming to predict cognitive function from neuroimaging (fMRI) data.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+When I'm not studying or doing research, I love to play pickleball and perform stand-up comedy. Additionally, I love Daft Punk, Taylor Swift, cheese, and visiting National Parks. I am a French and British dual citizen, and I speak fluent French, Spanish and Portuguese.
