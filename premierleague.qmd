@@ -6,3 +6,51 @@ author: Charlotte Imbert
 date: September 13, 2024
 format: html
 ---
+
+The data for this analysis was accessed via <https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04> . The data is from the [Premier League Match Data 2021-2022](#0) via [Evan Gower](#0) on Kaggle. The dataset contains information about soccer matches in the 2021-2022 English Premier League season.
+
+```{r message=FALSE}
+library(tidytuesdayR)
+library(tidyverse)
+soccer <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-04/soccer21-22.csv')
+```
+
+```{r}
+soccer_summary<-soccer%>%
+  group_by(HomeTeam)%>%
+  summarize(totalfouls=sum(HF))%>%
+  arrange(desc(totalfouls))
+```
+
+```{r}
+plot<-ggplot(soccer_summary, aes(x=reorder(HomeTeam, totalfouls), y=totalfouls))+
+  geom_bar(stat = "identity", aes(fill = ifelse(HomeTeam %in% c("Burnley", "Norwich", "Watford"), "Relegated", "Safe"))) +
+  scale_fill_manual(values = c("Relegated" = "navyblue", "Safe" = "lightblue")) +
+  theme_minimal()+
+  labs(title="Premier League Fouls by Team, 2021-2022",
+       subtitle="Home Games",
+       y="Total Number of Fouls",
+       x="Team",
+       fill="Relegation Status")
+plot+coord_flip()
+```
+
+```{r}
+soccer_summary2<-soccer%>%
+  group_by(AwayTeam)%>%
+  summarize(totalfouls_a=sum(AF))%>%
+  arrange(desc(totalfouls_a))
+```
+
+```{r}
+plot2<-ggplot(soccer_summary2, aes(x=reorder(AwayTeam, totalfouls_a), y=totalfouls_a))+
+  geom_bar(stat = "identity", aes(fill = ifelse(AwayTeam %in% c("Burnley", "Norwich", "Watford"), "Relegated", "Safe"))) +
+  scale_fill_manual(values = c("Relegated" = "red", "Safe" = "lightpink")) +
+  theme_minimal()+
+  labs(title="Premier League Fouls by Team, 2021-2022",
+       subtitle="Away Games",
+       y="Total Number of Fouls",
+       x="Team",
+       fill="Relegation Status")
+plot2+coord_flip()
+```
