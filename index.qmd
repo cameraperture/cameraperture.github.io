@@ -8,7 +8,7 @@ about:
     - text: LinkedIn
       href: https://www.linkedin.com/in/charlotte-imbert-491a051a5
     - text: GitHub
-      href: https://github.com/cameraperture
+      href: https://github.com/cameraperture/cameraperture.github.io
     - text: Email
       href: mailto:ciaa2020@mymail.pomona.edu
  image-shape: rectangle
