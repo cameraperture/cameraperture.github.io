@@ -1,0 +1,119 @@
+---
+title: "Shakespeare"
+description: |
+  Analyzing Dialogue from Hamlet, Romeo & Juliet and Macbeth
+author: Charlotte Imbert
+date: September 17, 2024
+format: html
+---
+
+Data was accessed from <https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-09-17> . The dataset is from [shakespeare.mit.edu](#0) (via [github.com/nrennie/shakespeare](#0)). Some of the code below is taken from Deepali Kank on GitHub, <https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38> .
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+hamlet <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-17/hamlet.csv')
+macbeth <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-17/macbeth.csv')
+romeo_juliet <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-09-17/romeo_juliet.csv')
+```
+
+```{r,message=FALSE, warning=FALSE}
+library(scales)
+library(tidytext)
+library(devtools)
+library(ggwordcloud)
+library(png)
+library(svglite)
+```
+
+## Romeo & Juliet
+
+```{r}
+romeo_juliet<-romeo_juliet%>%
+  filter(character %in% c("Romeo", "Juliet"))
+```
+
+We need to remove stop words:
+
+```{r}
+custom_stop_words <- c("thou", "thy", "thee", "thine", "art", "hast", "doth", "dost", "ere", "o","hath")
+```
+
+```{r}
+temp1 <- romeo_juliet %>%
+  unnest_tokens(word, dialogue) %>%
+  anti_join(stop_words)%>%
+  filter(!str_detect(word, "^[0-9]+$"))
+
+temp2 <- romeo_juliet %>%
+  unnest_tokens(word, dialogue)%>%
+  filter(!word %in% stop_words$word)%>%
+  filter(!str_detect(word, "^[0-9]+$"))
+```
+
+```{r}
+word_counts <- romeo_juliet %>%
+  unnest_tokens(word, dialogue) %>%
+  anti_join(stop_words) %>%
+  filter(!str_detect(word, "^[0-9]+$")) %>% #remove any word, and a full number. ^ is beginning of string, + means one or more, and $ is end of string
+  filter(!word %in% custom_stop_words) %>%
+  mutate(word=stringr::str_replace(word, "'s", ""))%>%
+  count(character, word, sort = TRUE)
+```
+
+```{r}
+juliet <- word_counts |> 
+  filter(character == "Juliet")
+```
+
+```{r}
+romeo <- word_counts |> 
+  filter(character == "Romeo")
+```
+
+Making a word cloud for each character:
+
+```{r}
+romeo %>%
+  filter(n>1)%>%
+  ggplot(aes(label=word, size=n, color=n))+
+  geom_text_wordcloud(rm_outside = TRUE, shape="cardioid")+
+  scale_size_area(max_size = 15) +
+  theme_minimal() +
+  scale_color_gradient(low = "#FF69B4", high = "#C41E3A")
+```
+
+```{r}
+p1_ro <- ggplot(
+  romeo,
+  aes(
+    label = word, size = n,color = n
+  )
+) +
+  geom_text_wordcloud_area(
+    mask = readPNG("/Users/charlotteimbert/Desktop/git/cameraperture.github.io/AlphaShakespeare.png"),
+    rm_outside = TRUE
+  ) +
+  scale_size_area(max_size = 20) +
+  theme_minimal() +
+  scale_color_gradient(low = "#FF69B4", high = "#C41E3A")
+
+print(p1_ro)
+```
+
+```{r}
+p1_ju <- ggplot(
+  juliet,
+  aes(
+    label = word, size = n,color = n
+  )
+) +
+  geom_text_wordcloud_area(
+    mask = readPNG("/Users/charlotteimbert/Desktop/git/cameraperture.github.io/AlphaShakespeare.png"),
+    rm_outside = TRUE
+  ) +
+  scale_size_area(max_size = 20) +
+  theme_minimal() +
+  scale_color_gradient(low = "#FF69B4", high = "#C41E3A")
+
+print(p1_ju)
+```
