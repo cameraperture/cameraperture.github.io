@@ -156,11 +156,11 @@ wc <- data|>
   arrange(desc(freq))
 ```
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, fig.width=10, fig.height=8, out.width="100%"}
 library(wordcloud2)
 library(wordcloud)
 library(RColorBrewer)
-wordcloud(words = wc$word, freq = wc$freq, min.freq = 600,           max.words=150, random.order=FALSE, rot.per=0, colors=brewer.pal(6, "Set2"), scale = c(2, 0.3))
+wordcloud(words = wc$word, freq = wc$freq, min.freq = 600,           max.words=150, random.order=FALSE, rot.per=0, colors=brewer.pal(6, "Set2"), scale = c(5, 1))
 ```
 
 We can see from both this word cloud and the earlier analysis done on family words that Americans are very concerned by family matters and family members: 'husband', 'children', 'kids', 'mom', 'mother', 'married', 'family', 'wife', 'son', 'father', 'parents', 'sister', to name a few.
@@ -169,7 +169,7 @@ From the word cloud, we can also distinguish the most common emotions: 'hurt', '
 
 ### Most Common Word by Year
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 words_by_year<-data|>
   unnest_tokens(output=word, input=question_only, token="words")|>
   anti_join(stop_words)|>
@@ -185,7 +185,12 @@ words_by_year<-data|>
 
 ```{r}
 ggplot(words_by_year, aes(x=year, y=freq))+
-  geom_point(aes(shape=word))
+  geom_point(aes(shape=word, color=word, size=3))+
+  labs(title="Most Common Word in 'Dear Abby' Letters",
+       subtitle= "By Year, 1985 to 2017",
+       x="Year",
+       y="Frequency")+
+  theme_minimal()
 ```
 
 ### Husband Letters Over Time
