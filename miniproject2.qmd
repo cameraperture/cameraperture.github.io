@@ -185,7 +185,7 @@ words_by_year<-data|>
 
 ```{r}
 ggplot(words_by_year, aes(x=year, y=freq))+
-  geom_point(aes(shape=word, color=word, size=3))+
+  geom_point(aes(shape=word, color=word), size=2)+
   labs(title="Most Common Word in 'Dear Abby' Letters",
        subtitle= "By Year, 1985 to 2017",
        x="Year",
