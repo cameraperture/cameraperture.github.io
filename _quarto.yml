@@ -16,6 +16,8 @@ website:
            href: premierleague.html
          - text: "Shakespeare"
            href: shakespeare.html
+      - text: "Mini-Project 2"
+        href: miniproject2.html
 
 format:
   html:

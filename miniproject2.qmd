@@ -1,0 +1,241 @@
+---
+title: "DS002 - Mini Project 2"
+description: |
+  Analyzing Text Data From The Pudding's "Dear Abby" Stories
+author: Charlotte Imbert
+date: October 2, 2024
+format: html
+---
+
+## Data Source
+
+The data used for this analysis are the "Dear Abby" stories from 1985 to 2017, underlying The Pudding's "30 years of American anxieties" article from November 2018 (<https://pudding.cool/2018/11/dearabby/>).
+
+Data was accessed via The Pudding's GitHub, at <https://github.com/the-pudding/data/tree/master/dearabby>.
+
+The dataset consists of 20034 observations, each corresponding to a question sent in to 'Dear Abby', a popular advice column.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+data<-read_csv("https://raw.githubusercontent.com/the-pudding/data/master/dearabby/raw_da_qs.csv")
+```
+
+## EDA
+
+It seems that the questions in the dataset are already all in lowercase, but I will apply the str_to_lower() function to ensure my analysis is accurate.
+
+```{r}
+data<-data|>
+  mutate(question_only=str_to_lower(question_only))
+```
+
+### Family Words
+
+It is reasonable to assume that a number of these questions might relate to family matters, which are often pressing but too taboo to discuss with the family members involved.
+
+Below, I use regular expressions to identify the most commonly occurring family members in the questions from 1985 to 2017.
+
+I am considering 'wife', 'husband', 'son' and 'daughter' (and their plural and possessive forms) as these are the most immediate family members.
+
+I am also including 'marriage' and 'divorce' since these are likely sources of distress or conflict that could push somebody to submit a question to the column.
+
+```{r}
+wife<-sum(grepl("\\bwives\\b|\\bwife'?s?'?\\b", data$question_only))
+husband<-sum(grepl("\\bhusband'?s?'?\\b", data$question_only))
+son<-sum(grepl("\\bson'?s?'?\\b", data$question_only))
+daughter<-sum(grepl("\\bdaughter'?s?'?\\b", data$question_only))
+marriage<-sum(grepl("\\bmarriage'?s?'?\\b|\\bmarried\\b", data$question_only))
+divorce<-sum(grepl("\\bdivorces?d?", data$question_only))
+family_data<-data.frame(Wife=wife, Husband=husband, Son=son, Daughter=daughter, Marriage=marriage, Divorce=divorce)
+```
+
+The table below shows the number of questions asked to Abby from 1985 to 2017 that included each term (including its plural or possessive forms).
+
+```{r}
+print(family_data)
+```
+
+It is very interesting to note that 'wife', 'son' and 'daughter' all appeared a similar number of times, while 'husband' was by far the most frequent, appearing almost twice as many times as the other terms (5124 times - this is approximately one quarter of the 20034 questions!) 'Marriage' was also very common, starring in 4887 questions.
+
+### Number of Questions Through the Years
+
+For some more exploratory data analysis, I wanted to observe how the number of questions per year changed over time:
+
+```{r}
+y_questions<-data|> group_by(year)|> summarize(n_questions=n())
+```
+
+```{r}
+ggplot(y_questions, aes(x=year, y=n_questions))+
+  geom_point(color='pink')+
+  theme_dark()+
+  labs(x="Year",
+       y="Number of Questions",
+       title="'Dear Abby' Questions Over The Years",
+       subtitle="From 1985 to 2017")
+```
+
+It seems like 1985 had an abnormally high number of questions. After this, the number of questions decreased steadily until 1999, when the number of questions per year began to increase again. It did so until 2016, and experienced a steep drop in 2017.
+
+### Question Length
+
+Then, I was curious about the length of the questions in the dataset:
+
+```{r}
+data|>
+  select(year, question_only)|>
+  mutate(size=str_length(question_only))|>
+  arrange(desc(size))|>
+  slice_head(n=10)
+```
+
+The longest question occurred in 1998, with a size of 13889 characters - and it was about Barbara Bush!
+
+What about the shortest question?
+
+```{r}
+q_length<-data|>
+  select(year, question_only)|>
+  mutate(size=str_length(question_only))|>
+  arrange(size)|>
+  slice_head(n=10)
+print(q_length)
+```
+
+It occurred in 1996, with the rather ominous: "q: were you alone or by yourself?". In 2010, someone asked a very hard question, but kept it incredibly succint at 53 characters: "how do you mend a broken heart?-- tears on my pillow".
+
+### 47 - Chirp Chirp!
+
+At Pomona College, the number 47 holds special meaning: it is said to be a number that frequently occurs in natural settings. With this in mind, I wanted to determine how often the number 47 appears in this dataset.
+
+```{r}
+data<-data|>
+  mutate(chirp=str_detect(question_only, "47"))
+sum(data$chirp)
+```
+
+The number 47 appears 227 times in the dataset, out of 20034 letters written to Abby.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(scales)
+library(tidytext)
+library(devtools)
+library(ggwordcloud)
+library(png)
+library(svglite)
+```
+
+## Distinguishing Common Themes Using Word Count
+
+I would like to determine which words are the most commonly occurring across all the questions to see if any common themes can be extracted.
+
+First, stop words need to be removed - these are common words in the English language that don't have much meaning. The stop_words dataframe from the tidytext library contains 3 lexicons of stop words.
+
+We should also remove the words 'dear' and 'abby' (and its variants) since those will be at the start of almost every letter.
+
+```{r}
+dear_abby <- c("dear", "abby", "abby's", "abbys")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+print(stop_words)
+```
+
+### Word Cloud - What Concerned Americans Most Between 1985 and 2017?
+
+Below is a word cloud displayed the 150 most common words from 32 years 'Dear Abby' letters (excluding stop words):
+
+```{r, message=FALSE, warning=FALSE}
+wc <- data|>
+  unnest_tokens(output=word, input=question_only, token="words")|>
+  anti_join(stop_words)|>
+  filter(str_detect(word, "^\\D+$"))|>
+  filter(!word %in% dear_abby)|>
+  group_by(word)|>
+  summarize(freq=n())|>
+  arrange(desc(freq))
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(wordcloud2)
+library(wordcloud)
+library(RColorBrewer)
+wordcloud(words = wc$word, freq = wc$freq, min.freq = 600,           max.words=150, random.order=FALSE, rot.per=0, colors=brewer.pal(6, "Set2"), scale = c(2, 0.3))
+```
+
+We can see from both this word cloud and the earlier analysis done on family words that Americans are very concerned by family matters and family members: 'husband', 'children', 'kids', 'mom', 'mother', 'married', 'family', 'wife', 'son', 'father', 'parents', 'sister', to name a few.
+
+From the word cloud, we can also distinguish the most common emotions: 'hurt', 'afraid', 'enjoy', 'concerned', 'upset'.
+
+### Most Common Word by Year
+
+```{r}
+words_by_year<-data|>
+  unnest_tokens(output=word, input=question_only, token="words")|>
+  anti_join(stop_words)|>
+  filter(str_detect(word, "^\\D+$"))|>
+  filter(!word %in% dear_abby)|>
+  group_by(word, year)|>
+  summarize(freq=n())|>
+  ungroup()|>
+  group_by(year)|>
+  slice_max(n = 1, order_by=freq)|>
+  arrange(year)
+```
+
+```{r}
+ggplot(words_by_year, aes(x=year, y=freq))+
+  geom_point(aes(shape=word))
+```
+
+### Husband Letters Over Time
+
+Since 'husband' was the most common word between 1985 and 2017, it would be interesting to see how its frequency changed over time:
+
+```{r, message=FALSE, warning=FALSE}
+husband_year<-data|>
+  unnest_tokens(output=word, input=question_only, token="words")|>
+  anti_join(stop_words)|>
+  filter(str_detect(word, "^husband'?s?$"))|>
+  group_by(year)|>
+  summarize(freq=n())|>
+  arrange(year)
+```
+
+```{r}
+ggplot(husband_year, aes(x=year, y=freq))+
+  geom_point(color="darkgreen", shape=18, size=2.5)+
+  theme_minimal()+
+  labs(title="Frequency of 'Husband' in 'Dear Abby' Letters",
+       subtitle= "1985 to 2017",
+       x="Year",
+       y="Number of Occurrences")
+```
+
+### Election Letters Over Time
+
+Lastly, I was interested in determining whether the word 'election' (and its plural form) was a common concern. I also wanted to see if it became more frequent during US Presidential Election years.
+
+```{r, message=FALSE, warning=FALSE}
+elections_year<-data|>
+  unnest_tokens(output=word, input=question_only, token="words")|>
+  anti_join(stop_words)|>
+  filter(str_detect(word, "^elections?$"))|>
+  group_by(year)|>
+  summarize(freq=n())|>
+  arrange(year)
+```
+
+```{r}
+ggplot(elections_year, aes(x=year, y=freq))+
+  geom_bar(stat="identity", aes(fill = ifelse(year %in% c(1988, 1992, 1996, 2000, 2004, 2008, 2012, 2016), "Yes", "No")))+
+  scale_fill_manual(values = c("Yes" = "navyblue", "No" = "gray")) +
+  theme_minimal()+
+  labs(title="'Dear Abby' Election Letters",
+       subtitle="Years With and Without US Presidential Elections",
+       y="Year",
+       x="Frequency",
+       fill="Election Year?")
+```
+
+The word 'election' and its plural form 'elections' does not seem to be a popular concern, never appearing more than 4 times in one year. However, the plot above shows that these words were more common during US Presidential Election years than during years without a Presidential Election, with the exception of 1994.
