@@ -19,7 +19,7 @@ ewf_standings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascie
 
 ## Project Overview
 
-The goal of this analysis is to use a visual lineup protocol to determine whether or not there is a home advantage in professional women's football. The null hypothesis (single-tailed) is that a team's home status for a game has no influence on the outcome of that game. The alternative hypothesis is that playing at home is advantageous, which translates to a greater proportion of wins for home teams relative to away teams. To test this hypothesis, I will create a plot showing the relationship between home/away status and match outcome for the observed data. Then, I will run permutations on the data to generate 20 null plots and I will randomly place the observed data plot among these plots, to see if visual discernment between the observed and permuted data is possible.
+The goal of this analysis is to use a visual lineup protocol to determine whether or not there is a home advantage in professional women's football. The null hypothesis (single-tailed) is that a team's home status for a game has no influence on the outcome of that game. The alternative hypothesis is that playing at home is advantageous, which translates to a greater proportion of wins for home teams relative to away teams. To test this hypothesis, I will create a plot showing the relationship between home status and match outcome for the observed data. Then, I will run permutations on the data to generate 20 null plots and I will randomly place the observed data plot among these plots, to see if visual discernment between the observed and permuted data is possible.
 
 ## EDA
 
@@ -104,13 +104,15 @@ shuffles |>
   facet_wrap(~ perm_n, ncol = 4)
 ```
 
-The 20 plots display stacked bar charts for each permutation. Upon visual inspection, the plots look very similar to each other, and there does not appear to be a home advantage under the null hypothesis.
+The 20 plots display stacked bar charts for each permutation. Upon visual inspection, the plots look very similar to each other, and there does not appear to be a home advantage, as expected under the null hypothesis.
 
 ## Lineup Protocol
 
 To execute a lineup protocol, the plot for the observed data should be placed among the permuted data plots. This can be done by assigning a unique permutation number for the observed data, binding the observed and permuted dataframe by row, and shuffling the order of the plots in the facet wrap:
 
 ```{r}
+#| fig-width: 90
+#| fig-height: 70
 set.seed(3)
 
 observed <- ewf |>
@@ -125,7 +127,17 @@ plots<- rbind(observed, shuffles) |>
   labs(x = "Home Team (1 = Home, 0 = Away)", y = "Proportion", fill = "Result") +
   ggtitle("Home Status vs. Match Result in English Women's Football") +
   theme_minimal() +
-  facet_wrap(~ perm_n, ncol = 4)
+  facet_wrap(~ perm_n, ncol = 4) +
+  theme(
+    plot.title = element_text(size = 100, face = "bold"),         
+    axis.title.x = element_text(size = 90),                      
+    axis.title.y = element_text(size = 90),                     
+    axis.text.x = element_text(size = 80),                       
+    axis.text.y = element_text(size = 75),                       
+    legend.title = element_text(size = 90),                      
+    legend.text = element_text(size = 88),                       
+    strip.text = element_text(size = 70)                         
+  )
 print(plots)
 ```
 
@@ -133,4 +145,4 @@ While differences between the plots may not be immediately obvious, especially w
 
 # Conclusion
 
-To summarize, the research question I wanted to answer in my analysis was whether or not there exists a home advantage in professional women's football in England. The data I used included all matches since 2011 for the top division, and all matches since 2014 for the second division. I started with some exploratory data analysis that visually suggested that there might be a home advantage. To test this further, I permuted the data 20 times to create 20 shuffled datasets. I created a stacked bar plot for each of these shuffled datasets and randomly placed the observed data stacked bar plot among the permuted plots. Lastly, I inspected the plots placed side-by-side and determined that the observed data is only slightly discernible among the permuted data. This allowed me to conclude that using a visual inference lineup protocol only provides slight evidence against the null hypothesis that a team's home status has no influence on the outcome of a match.
+To summarize, the research question I wanted to answer in my analysis was whether or not there exists a home advantage in professional women's football in England. The data I used included all matches since 2011 for the top division, and all matches since 2014 for the second division. I started with some exploratory data analysis that visually suggested that there might be a home advantage. To test this further, I permuted the data 20 times to create 20 shuffled datasets. I created a stacked bar plot for each of these shuffled datasets and randomly placed the bar plot for the observed data among the permuted plots. Lastly, I inspected the plots placed side-by-side and determined that the observed data is only slightly discernible from the permuted data. This allowed me to conclude that using a visual inference lineup protocol only provides slight evidence against the null hypothesis that a team's home status has no influence on the outcome of a match.
