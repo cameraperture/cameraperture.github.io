@@ -231,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The data for this analysis was accessed from the TidyTuesday GitHub repository at <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-07-16" class="uri">https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-07-16</a>. The original data is from the English Women’s Football (EWF) Database, created by Rob Clapp, available at <a href="https://github.com/probjects/ewf-database" class="uri">https://github.com/probjects/ewf-database</a>. The dataset contains information on every match played in the English Women’s Super League (WSL), which is the top division of professional women’s football, since 2011, as well as every match played in the Women’s Championship, the second division of professional women’s football, since 2014.</p>
 <section id="project-overview" class="level2">
 <h2 class="anchored" data-anchor-id="project-overview">Project Overview</h2>
-<p>The goal of this analysis is to use a visual lineup protocol to determine whether or not there is a home advantage in professional women’s football. The null hypothesis (single-tailed) is that a team’s home status for a game has no influence on the outcome of that game. The alternative hypothesis is that playing at home is advantageous, which translates to a greater proportion of wins for home teams relative to away teams. To test this hypothesis, I will create a plot showing the relationship between home/away status and match outcome for the observed data. Then, I will run permutations on the data to generate 20 null plots and I will randomly place the observed data plot among these plots, to see if visual discernment between the observed and permuted data is possible.</p>
+<p>The goal of this analysis is to use a visual lineup protocol to determine whether or not there is a home advantage in professional women’s football. The null hypothesis (single-tailed) is that a team’s home status for a game has no influence on the outcome of that game. The alternative hypothesis is that playing at home is advantageous, which translates to a greater proportion of wins for home teams relative to away teams. To test this hypothesis, I will create a plot showing the relationship between home status and match outcome for the observed data. Then, I will run permutations on the data to generate 20 null plots and I will randomly place the observed data plot among these plots, to see if visual discernment between the observed and permuted data is possible.</p>
 </section>
 <section id="eda" class="level2">
 <h2 class="anchored" data-anchor-id="eda">EDA</h2>
@@ -344,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The 20 plots display stacked bar charts for each permutation. Upon visual inspection, the plots look very similar to each other, and there does not appear to be a home advantage under the null hypothesis.</p>
+<p>The 20 plots display stacked bar charts for each permutation. Upon visual inspection, the plots look very similar to each other, and there does not appear to be a home advantage, as expected under the null hypothesis.</p>
 </section>
 <section id="lineup-protocol" class="level2">
 <h2 class="anchored" data-anchor-id="lineup-protocol">Lineup Protocol</h2>
@@ -364,12 +364,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Home Team (1 = Home, 0 = Away)"</span>, <span class="at">y =</span> <span class="st">"Proportion"</span>, <span class="at">fill =</span> <span class="st">"Result"</span>) <span class="sc">+</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Home Status vs. Match Result in English Women's Football"</span>) <span class="sc">+</span></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> perm_n, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(plots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> perm_n, <span class="at">ncol =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">100</span>, <span class="at">face =</span> <span class="st">"bold"</span>),         </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">90</span>),                      </span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">90</span>),                     </span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">80</span>),                       </span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">75</span>),                       </span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">90</span>),                      </span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">88</span>),                       </span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">70</span>)                         </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(plots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="miniproject3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="miniproject3_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="8640"></p>
 </figure>
 </div>
 </div>
@@ -379,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
-<p>To summarize, the research question I wanted to answer in my analysis was whether or not there exists a home advantage in professional women’s football in England. The data I used included all matches since 2011 for the top division, and all matches since 2014 for the second division. I started with some exploratory data analysis that visually suggested that there might be a home advantage. To test this further, I permuted the data 20 times to create 20 shuffled datasets. I created a stacked bar plot for each of these shuffled datasets and randomly placed the observed data stacked bar plot among the permuted plots. Lastly, I inspected the plots placed side-by-side and determined that the observed data is only slightly discernible among the permuted data. This allowed me to conclude that using a visual inference lineup protocol only provides slight evidence against the null hypothesis that a team’s home status has no influence on the outcome of a match.</p>
+<p>To summarize, the research question I wanted to answer in my analysis was whether or not there exists a home advantage in professional women’s football in England. The data I used included all matches since 2011 for the top division, and all matches since 2014 for the second division. I started with some exploratory data analysis that visually suggested that there might be a home advantage. To test this further, I permuted the data 20 times to create 20 shuffled datasets. I created a stacked bar plot for each of these shuffled datasets and randomly placed the bar plot for the observed data among the permuted plots. Lastly, I inspected the plots placed side-by-side and determined that the observed data is only slightly discernible from the permuted data. This allowed me to conclude that using a visual inference lineup protocol only provides slight evidence against the null hypothesis that a team’s home status has no influence on the outcome of a match.</p>
 
 
 </section>
