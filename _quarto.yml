@@ -20,6 +20,8 @@ website:
         href: miniproject2.html
       - text: "Mini-Project 3"
         href: miniproject3.html
+      - text: "Project 4"
+        href: project4.html
 
 format:
   html:
