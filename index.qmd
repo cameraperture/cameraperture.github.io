@@ -1,6 +1,6 @@
 ---
 #title: "Charlotte Imbert"
-image: kitten.JPG
+image: stanford.jpg
 toc: false
 about: 
  template: jolla
