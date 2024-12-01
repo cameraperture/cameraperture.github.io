@@ -8,6 +8,10 @@ website:
     left:
       - text: "About Me"
         href: index.qmd
+      - text: "Statistical Analyses"
+        menu: 
+          - text: "How to Win in Tennis"
+            href: atp.html
       - text: "Data Viz"
         menu: 
          - text: "Olympics"
