@@ -1,5 +1,7 @@
 ---
-title: "Project 4: SQL"
+title: "SQL"
+description: |
+  Using SQL to visualize Wideband Acoustic Immitance data
 format: html
 date: November 20, 2024"
 ---

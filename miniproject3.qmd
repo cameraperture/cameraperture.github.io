@@ -1,7 +1,7 @@
 ---
-title: "DS002 - Mini Project 3"
+title: "Permutation Testing, Iteration and Visual Inference"
 description: |
-  Permutation and Visual Inference on English Women's Football Data
+  Using a permutation test to produce a visual lineup protocol on English Women's Football data
 author: Charlotte Imbert
 date: November 4, 2024
 format: html
