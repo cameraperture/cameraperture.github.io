@@ -1,7 +1,7 @@
 ---
 title: "How to Win in Tennis"
 description: |
-  An Analysis of the Effect of Match Statistics on Win Percentage
+  An analysis of the effect of match statistics on win percentage in professional men's tennis during the 2022 ATP season
 author: Charlotte Imbert
 bibliography: references.bib
 date: March 31, 2023
