@@ -7,7 +7,7 @@ date: September 17, 2024
 format: html
 ---
 
-Data was accessed from <https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-09-17> . The dataset is from [shakespeare.mit.edu](#0) (via [github.com/nrennie/shakespeare](#0)). Some of the code below is taken from Deepali Kank on GitHub, <https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38> .
+Data was accessed from the TidyTuesday GitHub repositroy at <https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-09-17> . The dataset is from [shakespeare.mit.edu](#0) (via [github.com/nrennie/shakespeare](#0)), which contains all of William Shakespeare's plays and poems. Some of the code below is taken from Deepali Kank on GitHub, <https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38> .
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -18,6 +18,7 @@ romeo_juliet <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 
 ```{r,message=FALSE, warning=FALSE}
 library(scales)
+library(tidyverse)
 library(tidytext)
 library(devtools)
 library(ggwordcloud)
@@ -28,7 +29,7 @@ library(svglite)
 ## Romeo & Juliet
 
 ```{r}
-romeo_juliet<-romeo_juliet%>%
+romeo_juliet<-romeo_juliet |>
   filter(character %in% c("Romeo", "Juliet"))
 ```
 
@@ -39,24 +40,24 @@ custom_stop_words <- c("thou", "thy", "thee", "thine", "art", "hast", "doth", "d
 ```
 
 ```{r}
-temp1 <- romeo_juliet %>%
-  unnest_tokens(word, dialogue) %>%
-  anti_join(stop_words)%>%
+temp1 <- romeo_juliet |>
+  unnest_tokens(word, dialogue) |>
+  anti_join(stop_words) |>
   filter(!str_detect(word, "^[0-9]+$"))
 
-temp2 <- romeo_juliet %>%
-  unnest_tokens(word, dialogue)%>%
-  filter(!word %in% stop_words$word)%>%
+temp2 <- romeo_juliet |>
+  unnest_tokens(word, dialogue) |>
+  filter(!word %in% stop_words$word) |>
   filter(!str_detect(word, "^[0-9]+$"))
 ```
 
 ```{r}
-word_counts <- romeo_juliet %>%
-  unnest_tokens(word, dialogue) %>%
+word_counts <- romeo_juliet |>
+  unnest_tokens(word, dialogue) |>
   anti_join(stop_words) %>%
-  filter(!str_detect(word, "^[0-9]+$")) %>% #remove any word, and a full number. ^ is beginning of string, + means one or more, and $ is end of string
-  filter(!word %in% custom_stop_words) %>%
-  mutate(word=stringr::str_replace(word, "'s", ""))%>%
+  filter(!str_detect(word, "^[0-9]+$")) |> #remove any word, and a full number. ^ is beginning of string, + means one or more, and $ is end of string
+  filter(!word %in% custom_stop_words) |>
+  mutate(word=stringr::str_replace(word, "'s", "")) |>
   count(character, word, sort = TRUE)
 ```
 
@@ -73,10 +74,10 @@ romeo <- word_counts |>
 Making a word cloud for each character:
 
 ```{r}
-romeo %>%
-  filter(n>1)%>%
-  ggplot(aes(label=word, size=n, color=n))+
-  geom_text_wordcloud(rm_outside = TRUE, shape="cardioid")+
+romeo |>
+  filter(n>1) |>
+  ggplot(aes(label=word, size=n, color=n)) +
+  geom_text_wordcloud(rm_outside = TRUE, shape="cardioid") +
   scale_size_area(max_size = 15) +
   theme_minimal() +
   scale_color_gradient(low = "#FF69B4", high = "#C41E3A")
@@ -100,7 +101,7 @@ p1_ro <- ggplot(
 print(p1_ro)
 ```
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 p1_ju <- ggplot(
   juliet,
   aes(
