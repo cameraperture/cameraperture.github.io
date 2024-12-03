@@ -7,7 +7,7 @@ date: September 13, 2024
 format: html
 ---
 
-Data for this analysis was accessed from <https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27> . Data was scraped from [www.sports-reference.com](http://www.sports-reference.com/) in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.
+Data for this analysis was accessed from the TidyTuesday GitHub repository at <https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27> . Data was scraped from [www.sports-reference.com](http://www.sports-reference.com/) in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.
 
 ```{r message=FALSE}
 library(tidytuesdayR)
