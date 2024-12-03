@@ -15,42 +15,54 @@ library(tidyverse)
 soccer <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-04/soccer21-22.csv')
 ```
 
-```{r}
-soccer_summary<-soccer%>%
-  group_by(HomeTeam)%>%
-  summarize(totalfouls=sum(HF))%>%
-  arrange(desc(totalfouls))
-```
+I am interested in identifying trends between the total number of fouls a team commits and their relegation status. Firstly, listing teams in descending order of total fouls at home:
 
 ```{r}
-plot<-ggplot(soccer_summary, aes(x=reorder(HomeTeam, totalfouls), y=totalfouls))+
+soccer_summary<-soccer |>
+  group_by(HomeTeam) |>
+  summarize(totalfouls=sum(HF)) |>
+  arrange(desc(totalfouls))
+head(soccer_summary)
+```
+
+Now, plotting this relationship and highlighting the teams that were relegated at the end of the season, in navy blue:
+
+```{r}
+plot<-ggplot(soccer_summary, aes(x=reorder(HomeTeam, totalfouls), y=totalfouls)) +
   geom_bar(stat = "identity", aes(fill = ifelse(HomeTeam %in% c("Burnley", "Norwich", "Watford"), "Relegated", "Safe"))) +
   scale_fill_manual(values = c("Relegated" = "navyblue", "Safe" = "lightblue")) +
-  theme_minimal()+
+  theme_minimal() +
   labs(title="Premier League Fouls by Team, 2021-2022",
        subtitle="Home Games",
        y="Total Number of Fouls",
        x="Team",
        fill="Relegation Status")
-plot+coord_flip()
+plot + coord_flip()
 ```
 
+Is this relationship different when teams are playing away from home?
+
 ```{r}
-soccer_summary2<-soccer%>%
-  group_by(AwayTeam)%>%
-  summarize(totalfouls_a=sum(AF))%>%
+soccer_summary2<- soccer |>
+  group_by(AwayTeam) |>
+  summarize(totalfouls_a=sum(AF)) |>
   arrange(desc(totalfouls_a))
+head(soccer_summary2)
 ```
 
 ```{r}
-plot2<-ggplot(soccer_summary2, aes(x=reorder(AwayTeam, totalfouls_a), y=totalfouls_a))+
+plot2<-ggplot(soccer_summary2, aes(x=reorder(AwayTeam, totalfouls_a), y=totalfouls_a)) +
   geom_bar(stat = "identity", aes(fill = ifelse(AwayTeam %in% c("Burnley", "Norwich", "Watford"), "Relegated", "Safe"))) +
   scale_fill_manual(values = c("Relegated" = "red", "Safe" = "lightpink")) +
-  theme_minimal()+
+  theme_minimal() +
   labs(title="Premier League Fouls by Team, 2021-2022",
        subtitle="Away Games",
        y="Total Number of Fouls",
        x="Team",
        fill="Relegation Status")
-plot2+coord_flip()
+plot2 + coord_flip()
 ```
+
+Based on these plots, a team's total number of fouls does not seem to influence their relegation status. For example, Norwich had one of the lowest number of fouls away from home but still faced relegation.
+
+We can also see that home status does not really influence the total number of fouls committed by a team: Leeds and Manchester City are top and bottom, respectively, for the number of fouls both at home and away. The majority of the teams in the league committed a similar total number of fouls at home and away. Manchester United are an exception as they committed the second highest number of fouls away, compared to the fifth lowest at home.

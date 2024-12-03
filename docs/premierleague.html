@@ -143,10 +143,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-viz" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Data Viz</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-visualization" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data Visualization</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-viz">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-visualization">    
         <li>
     <a class="dropdown-item" href="./olympics.html">
  <span class="dropdown-text">Olympics</span></a>
@@ -161,18 +161,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
     </ul>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="./miniproject2.html"> 
-<span class="menu-text">Mini-Project 2</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-science-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data Science Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-science-projects">    
+        <li>
+    <a class="dropdown-item" href="./project4.html">
+ <span class="dropdown-text">SQL</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./miniproject3.html"> 
-<span class="menu-text">Mini-Project 3</span></a>
+        <li>
+    <a class="dropdown-item" href="./miniproject3.html">
+ <span class="dropdown-text">Permutation</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./project4.html"> 
-<span class="menu-text">Project 4</span></a>
+        <li>
+    <a class="dropdown-item" href="./miniproject2.html">
+ <span class="dropdown-text">Text Analysis</span></a>
   </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
@@ -233,23 +240,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>soccer <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-04/soccer21-22.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>I am interested in identifying trends between the total number of fouls a team commits and their relegation status. Firstly, listing teams in descending order of total fouls at home:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>soccer_summary<span class="ot">&lt;-</span>soccer<span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HomeTeam)<span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">totalfouls=</span><span class="fu">sum</span>(HF))<span class="sc">%&gt;%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(totalfouls))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>soccer_summary<span class="ot">&lt;-</span>soccer <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HomeTeam) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">totalfouls=</span><span class="fu">sum</span>(HF)) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(totalfouls))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soccer_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  HomeTeam       totalfouls
+  &lt;chr&gt;               &lt;dbl&gt;
+1 Leeds                 236
+2 Watford               215
+3 Chelsea               213
+4 Crystal Palace        210
+5 Newcastle             209
+6 Brighton              208</code></pre>
 </div>
+</div>
+<p>Now, plotting this relationship and highlighting the teams that were relegated at the end of the season, in navy blue:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(soccer_summary, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(HomeTeam, totalfouls), <span class="at">y=</span>totalfouls))<span class="sc">+</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(HomeTeam <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Burnley"</span>, <span class="st">"Norwich"</span>, <span class="st">"Watford"</span>), <span class="st">"Relegated"</span>, <span class="st">"Safe"</span>))) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Relegated"</span> <span class="ot">=</span> <span class="st">"navyblue"</span>, <span class="st">"Safe"</span> <span class="ot">=</span> <span class="st">"lightblue"</span>)) <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Premier League Fouls by Team, 2021-2022"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"Home Games"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Total Number of Fouls"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Team"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Relegation Status"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plot<span class="sc">+</span><span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(soccer_summary, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(HomeTeam, totalfouls), <span class="at">y=</span>totalfouls)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(HomeTeam <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Burnley"</span>, <span class="st">"Norwich"</span>, <span class="st">"Watford"</span>), <span class="st">"Relegated"</span>, <span class="st">"Safe"</span>))) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Relegated"</span> <span class="ot">=</span> <span class="st">"navyblue"</span>, <span class="st">"Safe"</span> <span class="ot">=</span> <span class="st">"lightblue"</span>)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Premier League Fouls by Team, 2021-2022"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"Home Games"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Total Number of Fouls"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Team"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Relegation Status"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plot <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -258,23 +279,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Is this relationship different when teams are playing away from home?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>soccer_summary2<span class="ot">&lt;-</span>soccer<span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(AwayTeam)<span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">totalfouls_a=</span><span class="fu">sum</span>(AF))<span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(totalfouls_a))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soccer_summary2<span class="ot">&lt;-</span> soccer <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(AwayTeam) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">totalfouls_a=</span><span class="fu">sum</span>(AF)) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(totalfouls_a))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soccer_summary2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  AwayTeam       totalfouls_a
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 Leeds                   233
+2 Man United              226
+3 Watford                 225
+4 Aston Villa             211
+5 Crystal Palace          205
+6 Everton                 201</code></pre>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(soccer_summary2, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(AwayTeam, totalfouls_a), <span class="at">y=</span>totalfouls_a))<span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(AwayTeam <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Burnley"</span>, <span class="st">"Norwich"</span>, <span class="st">"Watford"</span>), <span class="st">"Relegated"</span>, <span class="st">"Safe"</span>))) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Relegated"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Safe"</span> <span class="ot">=</span> <span class="st">"lightpink"</span>)) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Premier League Fouls by Team, 2021-2022"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"Away Games"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Total Number of Fouls"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Team"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Relegation Status"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plot2<span class="sc">+</span><span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(soccer_summary2, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(AwayTeam, totalfouls_a), <span class="at">y=</span>totalfouls_a)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(AwayTeam <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Burnley"</span>, <span class="st">"Norwich"</span>, <span class="st">"Watford"</span>), <span class="st">"Relegated"</span>, <span class="st">"Safe"</span>))) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Relegated"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Safe"</span> <span class="ot">=</span> <span class="st">"lightpink"</span>)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Premier League Fouls by Team, 2021-2022"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"Away Games"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Total Number of Fouls"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Team"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Relegation Status"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plot2 <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -283,6 +317,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Based on these plots, a team’s total number of fouls does not seem to influence their relegation status. For example, Norwich had one of the lowest number of fouls away from home but still faced relegation.</p>
+<p>We can also see that home status does not really influence the total number of fouls committed by a team: Leeds and Manchester City are top and bottom, respectively, for the number of fouls both at home and away. The majority of the teams in the league committed a similar total number of fouls at home and away. Manchester United are an exception as they committed the second highest number of fouls away, compared to the fifth lowest at home.</p>
 
 
 
