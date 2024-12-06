@@ -1,11 +1,13 @@
 ---
 title: "Shakespeare"
 description: |
-  Analyzing Dialogue from Hamlet, Romeo & Juliet and Macbeth
+  Analyzing Dialogue from William Shakespeare's Romeo & Juliet
 author: Charlotte Imbert
 date: September 17, 2024
 format: html
 ---
+
+## The Data
 
 Data was accessed from the TidyTuesday GitHub repositroy at <https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-09-17> . The dataset is from [shakespeare.mit.edu](#0) (via [github.com/nrennie/shakespeare](#0)), which contains all of William Shakespeare's plays and poems. Some of the code below is taken from Deepali Kank on GitHub, <https://github.com/deepdk/TidyTuesday2024/tree/main/2024/week_38> .
 
@@ -28,62 +30,48 @@ library(svglite)
 
 ## Romeo & Juliet
 
+For this TidyTuesday project, I am interested in using text mining to observe the most commonly spoken words by Romeo and Juliet in the famous Shakespeare play. The first step is to filter for only those lines spoken by Romeo or Juliet.
+
 ```{r}
 romeo_juliet<-romeo_juliet |>
   filter(character %in% c("Romeo", "Juliet"))
 ```
 
-We need to remove stop words:
+For any text mining analysis, stop words (the most common words in a language) need to be removed. Bearing in mind that this is dialogue from the 16th century, modern stop words need to be converted in their 16th century equivalents.
 
 ```{r}
 custom_stop_words <- c("thou", "thy", "thee", "thine", "art", "hast", "doth", "dost", "ere", "o","hath")
 ```
 
-```{r}
-temp1 <- romeo_juliet |>
-  unnest_tokens(word, dialogue) |>
-  anti_join(stop_words) |>
-  filter(!str_detect(word, "^[0-9]+$"))
+Next, we use a tidy pipeline to separate each line of dialogue into individual words, remove both modern and 16th century stop words, remove the possessive 's', and remove strings that are entirely numbers using regular expression matching.
 
-temp2 <- romeo_juliet |>
-  unnest_tokens(word, dialogue) |>
-  filter(!word %in% stop_words$word) |>
-  filter(!str_detect(word, "^[0-9]+$"))
-```
-
-```{r}
+```{r, message=FALSE}
 word_counts <- romeo_juliet |>
   unnest_tokens(word, dialogue) |>
   anti_join(stop_words) %>%
-  filter(!str_detect(word, "^[0-9]+$")) |> #remove any word, and a full number. ^ is beginning of string, + means one or more, and $ is end of string
+  filter(!str_detect(word, "^[0-9]+$")) |>
   filter(!word %in% custom_stop_words) |>
   mutate(word=stringr::str_replace(word, "'s", "")) |>
   count(character, word, sort = TRUE)
 ```
 
+Then, word counts for each word are computed individually for Romeo and Juliet.
+
 ```{r}
 juliet <- word_counts |> 
   filter(character == "Juliet")
+head(juliet)
 ```
 
 ```{r}
 romeo <- word_counts |> 
   filter(character == "Romeo")
+head(romeo)
 ```
 
-Making a word cloud for each character:
+We can then display these word counts via word clouds, in the shape of William Shakespeare himself!
 
-```{r}
-romeo |>
-  filter(n>1) |>
-  ggplot(aes(label=word, size=n, color=n)) +
-  geom_text_wordcloud(rm_outside = TRUE, shape="cardioid") +
-  scale_size_area(max_size = 15) +
-  theme_minimal() +
-  scale_color_gradient(low = "#FF69B4", high = "#C41E3A")
-```
-
-```{r}
+```{r warning=FALSE, message=FALSE}
 p1_ro <- ggplot(
   romeo,
   aes(
@@ -100,6 +88,8 @@ p1_ro <- ggplot(
 
 print(p1_ro)
 ```
+
+The word cloud above represents Romeo's most common words, while the one below displays Juliet's most common words.
 
 ```{r warning=FALSE, message=FALSE}
 p1_ju <- ggplot(
@@ -118,3 +108,5 @@ p1_ju <- ggplot(
 
 print(p1_ju)
 ```
+
+Juliet's most common word was Romeo, but Romeo's most common word was not Juliet - instead, it was 'love'.
