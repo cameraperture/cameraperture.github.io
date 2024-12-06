@@ -66,9 +66,9 @@ y_questions<-data|> group_by(year)|> summarize(n_questions=n())
 ```
 
 ```{r}
-ggplot(y_questions, aes(x=year, y=n_questions))+
-  geom_point(color='pink')+
-  theme_dark()+
+ggplot(y_questions, aes(x=year, y=n_questions)) +
+  geom_point(color='pink') +
+  theme_dark() +
   labs(x="Year",
        y="Number of Questions",
        title="'Dear Abby' Questions Over The Years",
@@ -160,7 +160,7 @@ wc <- data|>
 library(wordcloud2)
 library(wordcloud)
 library(RColorBrewer)
-wordcloud(words = wc$word, freq = wc$freq, min.freq = 600,           max.words=150, random.order=FALSE, rot.per=0, colors=brewer.pal(6, "Set2"), scale = c(5, 1))
+wordcloud(words = wc$word, freq = wc$freq, min.freq = 600, max.words=150, random.order=FALSE, rot.per=0, colors=brewer.pal(6, "Set2"), scale = c(5, 1))
 ```
 
 We can see from both this word cloud and the earlier analysis done on family words that Americans are very concerned by family matters and family members: 'husband', 'children', 'kids', 'mom', 'mother', 'married', 'family', 'wife', 'son', 'father', 'parents', 'sister', to name a few.
@@ -170,7 +170,7 @@ From the word cloud, we can also distinguish the most common emotions: 'hurt', '
 ### Most Common Word by Year
 
 ```{r, message=FALSE, warning=FALSE}
-words_by_year<-data|>
+words_by_year<- data|>
   unnest_tokens(output=word, input=question_only, token="words")|>
   anti_join(stop_words)|>
   filter(str_detect(word, "^\\D+$"))|>
@@ -184,12 +184,12 @@ words_by_year<-data|>
 ```
 
 ```{r}
-ggplot(words_by_year, aes(x=year, y=freq))+
-  geom_point(aes(shape=word, color=word), size=2)+
+ggplot(words_by_year, aes(x=year, y=freq)) +
+  geom_point(aes(shape=word, color=word), size=2) +
   labs(title="Most Common Word in 'Dear Abby' Letters",
        subtitle= "By Year, 1985 to 2017",
        x="Year",
-       y="Frequency")+
+       y="Frequency") +
   theme_minimal()
 ```
 
@@ -198,7 +198,7 @@ ggplot(words_by_year, aes(x=year, y=freq))+
 Since 'husband' was the most common word between 1985 and 2017, it would be interesting to see how its frequency changed over time:
 
 ```{r, message=FALSE, warning=FALSE}
-husband_year<-data|>
+husband_year<- data|>
   unnest_tokens(output=word, input=question_only, token="words")|>
   anti_join(stop_words)|>
   filter(str_detect(word, "^husband'?s?$"))|>
@@ -208,9 +208,9 @@ husband_year<-data|>
 ```
 
 ```{r}
-ggplot(husband_year, aes(x=year, y=freq))+
-  geom_point(color="darkgreen", shape=18, size=2.5)+
-  theme_minimal()+
+ggplot(husband_year, aes(x=year, y=freq)) +
+  geom_point(color="darkgreen", shape=18, size=2.5) +
+  theme_minimal() +
   labs(title="Frequency of 'Husband' in 'Dear Abby' Letters",
        subtitle= "1985 to 2017",
        x="Year",
@@ -222,7 +222,7 @@ ggplot(husband_year, aes(x=year, y=freq))+
 Lastly, I was interested in determining whether the word 'election' (and its plural form) was a common concern. I also wanted to see if it became more frequent during US Presidential Election years.
 
 ```{r, message=FALSE, warning=FALSE}
-elections_year<-data|>
+elections_year<- data|>
   unnest_tokens(output=word, input=question_only, token="words")|>
   anti_join(stop_words)|>
   filter(str_detect(word, "^elections?$"))|>
@@ -232,10 +232,10 @@ elections_year<-data|>
 ```
 
 ```{r}
-ggplot(elections_year, aes(x=year, y=freq))+
-  geom_bar(stat="identity", aes(fill = ifelse(year %in% c(1988, 1992, 1996, 2000, 2004, 2008, 2012, 2016), "Yes", "No")))+
+ggplot(elections_year, aes(x=year, y=freq)) +
+  geom_bar(stat="identity", aes(fill = ifelse(year %in% c(1988, 1992, 1996, 2000, 2004, 2008, 2012, 2016), "Yes", "No"))) +
   scale_fill_manual(values = c("Yes" = "navyblue", "No" = "gray")) +
-  theme_minimal()+
+  theme_minimal() +
   labs(title="'Dear Abby' Election Letters",
        subtitle="Years With and Without US Presidential Elections",
        y="Year",
