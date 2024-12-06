@@ -8,8 +8,6 @@ website:
     left:
       - text: "About Me"
         href: index.qmd
-      - text: "Final Presentation"
-        href: presentation.html
       - text: "Statistical Analyses"
         menu: 
           - text: "How to Win in Tennis"
@@ -23,7 +21,9 @@ website:
          - text: "Shakespeare"
            href: shakespeare.html
       - text: "Data Science Projects"
-        menu: 
+        menu:
+          - text: "Final Presentation"
+            href: presentation.html
           - text: "SQL"
             href: project4.html
           - text: "Permutation"
