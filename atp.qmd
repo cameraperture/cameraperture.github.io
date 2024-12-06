@@ -36,8 +36,7 @@ Considered in this study were the 100 male professional tennis players with the 
 
 The variables included in the final model were height, serve, ratio, and return cubed, with the slope coefficients and associated p-values displayed in Table 1 and a y-intercept of -207.8. All four predictor variables were significant at the 0.001 level. The adjusted R-squared for the model was 0.6037, with a residual standard error of 8.678. The model can be represented by the following equation:
 
-![](docs/table1.jpg)
-Table 1. The predictor variables included in the model along with their slope coefficients and corresponding p-values.
+![](docs/table1.jpg) Table 1. The predictor variables included in the model along with their slope coefficients and corresponding p-values.
 
 This model was arrived at via the following procedure. With assistance from the Box-Cox function in R, it was deemed that no transformation of the winning percentage response variable was necessary. Each of the 6 predictor variables were then input into the Box-Cox function to verify if any transformations were required. The suggested transformations were applied and added to the data frame only if the resulting variable remained interpretable. The transformed variables that were added to the data frame were the reciprocal of age, the square root of ratio, the natural logarithm of net, and return cubed. The updated data frame was then subjected to both stepwise AIC and relaxed LASSO. Both methods suggested adding height, serve, ratio, and return cubed to the model. The addition of other variables was suggested, but these fits yielded insignificant p-values and had negligible effects on adjusted R-squared values. For the sake of model simplicity and interpretability, it was decided to include height, serve, ratio, and return3 in the final model, with ùõΩ values and p-values shown in Table 1.
 
@@ -47,8 +46,7 @@ The final model tells us that 0.6037 of the variance in a touring professional‚Ä
 
 Confidence intervals can be used to estimate the value of the mean winning percentage for a touring professional with specific predictor variable values. In this case, our confidence interval tells us that we are 95% confident that the mean winning percentage for a touring professional 188cm tall with 50.96% of second serve points won when serving, 51.22% of second serve points won when returning and a 1.073 ratio of winners to unforced errors is expected to lie between 50.29% and 55.64%. Prediction intervals were also obtained for each observation in the sample. These estimate the value of the winning percentage for a specific new observation with defined values for each predictor variable. Constructing a prediction interval using the same predictor variable values as above (188cm, 50.96%, 51.22%, 1.073) tells us that we are 95% confident that the winning percentage for the next touring professional with these predictor values will lie between 35.53% and 70.40%. This interval is much larger than the confidence interval as it accounts for the many sources of noise specific to that tennis player that cannot be explained by the variables in our model.
 
-![](docs/fig1.jpg)
-Figure 1. Residual plots resulting from the fitted multiple linear regression model.
+![](docs/fig1.jpg) Figure 1. Residual plots resulting from the fitted multiple linear regression model.
 
 ## Conclusion
 
