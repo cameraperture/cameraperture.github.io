@@ -49,7 +49,7 @@ colnames(df) <- c("home", "result", "frequency")
 
 ggplot(df, aes(x = home, y = result, fill = frequency)) +
   geom_tile() +
-  scale_fill_gradient(low = "white", high = "maroon") +
+  scale_fill_gradient(low = "white", high = "maroon", limits = c(0, 1100)) +
   labs(title = "Home Status vs. Match Outcome in English Women's Football",
        x = "Home Status",
        y = "Outcome",
@@ -57,7 +57,7 @@ ggplot(df, aes(x = home, y = result, fill = frequency)) +
   theme_minimal()
 ```
 
-This preliminarily suggests that there might be a home advantage.
+This preliminary figure suggests that there might be a home advantage.
 
 ## Observed Data
 
@@ -66,9 +66,6 @@ We can alternatively display the data using a stacked bar plot:
 ```{r}
 ewf<- ewf_appearances |>
   select(home_team, result)
-
-ewf$result<- as.factor(ewf$result)
-ewf$result <- fct_relevel(ewf$result, "Win", "Draw", "Loss")
 
 ewf |>
   ggplot(aes(x = as.factor(home_team), fill = result)) +
@@ -88,17 +85,22 @@ Next, a permutation function needs to be created to produce a null sampling dist
 set.seed(3)
 permutation <- function(dataset, perm_n) {
   dataset |>
-    mutate(perm_result = sample(result, replace=FALSE), perm_n = perm_n)
+    group_by(match_name) |>
+    mutate(perm_home_team = sample(home_team, replace=FALSE)) |>
+    ungroup() |>
+    mutate(perm_n = perm_n)
 }
 
-shuffles <- map_dfr(1:20, ~ permutation(ewf, .x))
+shuffles <- map_dfr(1:20, ~ permutation(ewf_appearances, .x))
 ```
 
 ```{r}
 shuffles |>
-  ggplot(aes(x = as.factor(home_team), fill = perm_result)) +
+  ggplot(aes(x = as.factor(perm_home_team), fill = result)) +
   geom_bar(position = "fill") +
-  labs(x = "Home Status (1 = Home, 0 = Away)", y = "Proportion", fill = "Result") +
+  labs(x = "Home Status (1 = Home, 0 = Away)",
+       y = "Proportion",
+       fill = "Result") +
   ggtitle("Home Status vs. Match Result in English Women's Football") +
   theme_minimal() +
   facet_wrap(~ perm_n, ncol = 4)
@@ -115,16 +117,22 @@ To execute a lineup protocol, the plot for the observed data should be placed am
 #| fig-height: 70
 set.seed(3)
 
-observed <- ewf |>
-  mutate(perm_result = result, perm_n = 0)
+observed <- ewf_appearances |>
+  mutate(perm_home_team = home_team, perm_n = 0) |>
+  select(perm_home_team, result, perm_n)
 
-random_lvls <- sample(0:20)
+shuffles <- map_dfr(1:20, ~ permutation(ewf_appearances, .x))|>
+  select(perm_home_team, result, perm_n)
 
-plots<- rbind(observed, shuffles) |>
-  mutate(perm_n = factor(perm_n, levels = random_lvls)) |>
-  ggplot(aes(x = as.factor(home_team), fill = perm_result)) +
+perm_combined <- rbind(observed, shuffles)
+  
+plots<- perm_combined |>
+  mutate(perm_n = factor(perm_n, levels = c(0, 1:20))) |>
+  ggplot(aes(x = as.factor(perm_home_team), fill = result)) +
   geom_bar(position = "fill") +
-  labs(x = "Home Team (1 = Home, 0 = Away)", y = "Proportion", fill = "Result") +
+  labs(x = "Home Team (1 = Home, 0 = Away)", 
+       y = "Proportion", 
+       fill = "Result") +
   ggtitle("Home Status vs. Match Result in English Women's Football") +
   theme_minimal() +
   facet_wrap(~ perm_n, ncol = 4) +
@@ -141,8 +149,8 @@ plots<- rbind(observed, shuffles) |>
 print(plots)
 ```
 
-While differences between the plots may not be immediately obvious, especially with the small plot size, upon closer inspection we can see that plot 0 has a higher proportion of wins at home than the other plots. This corresponds to the plot of the observed data. This plot is discernible from the permuted data, but only very slightly.
+Upon visual inspection of these plots, there is no single plot that stands out from the others as showing a much higher win proportion at home. There is some variability between the plots, with some showing a higher proportion of wins at home and others showing the opposite relationship. When we look closer, we can see that plot 0 has a higher proportion of wins at home than all of the other plots except number 2. Plot 0 corresponds to the observed data, while plot 2 represents permuted data. Since there is no obvious difference between these two plots, this implies that there is no significant home advantage in English professional women's football.
 
 # Conclusion
 
-To summarize, the research question I wanted to answer in my analysis was whether or not there exists a home advantage in professional women's football in England. The data I used included all matches since 2011 for the top division, and all matches since 2014 for the second division. I started with some exploratory data analysis that visually suggested that there might be a home advantage. To test this further, I permuted the data 20 times to create 20 shuffled datasets. I created a stacked bar plot for each of these shuffled datasets and randomly placed the bar plot for the observed data among the permuted plots. Lastly, I inspected the plots placed side-by-side and determined that the observed data is only slightly discernible from the permuted data. This allowed me to conclude that using a visual inference lineup protocol only provides slight evidence against the null hypothesis that a team's home status has no influence on the outcome of a match.
+To summarize, the research question I wanted to answer in my analysis was whether or not there exists a home advantage in professional women's football in England. The data I used included all matches since 2011 for the top division, and all matches since 2014 for the second division. I started with some exploratory data analysis that visually suggested that there might be a home advantage. To test this further, I permuted the data 20 times to create 20 shuffled datasets. I created a stacked bar plot for each of these shuffled datasets and randomly placed the bar plot for the observed data among the permuted plots. Lastly, I inspected the plots placed side-by-side and determined that the observed data is not obviously discernible from the permuted data. Therefore, this visual inference lineup protocol does not provide sufficient evidence against the null hypothesis that a team's home status has no influence on the outcome of a match.
