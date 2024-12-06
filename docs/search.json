@@ -222,5 +222,68 @@
     "title": "Olympics",
     "section": "Visualizations",
     "text": "Visualizations\nI am interested in observing several trends in Olympic data over time. The first is the trend in female Olympians over time, and the second is the trend in Olympians’ ages over time.\nThe scatter plot below aims to examine both trends in one visualization. We can see that the number of female athletes considerably increased over the years, especially since the 1980s. An interesting trend is that there are far more young (below the age of 25) female than male Olympians. Above this age, there is no clear trend is male or female representation.\n\nggplot(olympics, aes(x=year, y=age)) +\n  geom_point(aes(color=sex)) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nScatter plot showing the age of athletes over the years from 1896 to 2016. Male athletes are represented in blue, and female athletes are represented in red.\nThis data can alternatively be presented through a stacked histogram. This visualization emphasizes the disparity in the number of female Olympians compared to male Olympians.\n\nggplot(olympics, aes(x=age)) +\n  geom_histogram(aes(fill=sex)) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nStacked histogram showing the number of Olympic athletes for each age (by year), for all Olympians between 1896 and 2016. Male athletes are represented in blue, and female athletes are represented in red.\n\nolympics_nona&lt;- olympics[!is.na(olympics$age), ]\nolympics_meanage&lt;- olympics_nona |&gt;\n  group_by(year) |&gt;\n  summarize(avg_age=(mean(age)))\n\nThis final visualization aims to display the trend in the mean age of Olympians over time. An overarching trend that can be seen is that the mean age of athletes increased from 1896 to 1932; it then decreased steadily until 1980, and has been increasing steadily since then. Two outliers are worth pointing out. The very first Olympics in 1896 has an unusually low mean age of approximately 23.5 years, while the 1932 Olympics had an unusually high mean age of around 32.5 years.\n\nggplot(olympics_meanage, aes(x=year, y=avg_age)) +\n  geom_point(shape=16, size=2, color=\"goldenrod4\") +\n  geom_smooth(color=\"#90EE90\", fill=\"#90EE90\", se=FALSE) +\n  theme_minimal() +\n  labs(title = \"Mean Age of Athletes at the Olympics\",\n       subtitle = \"1896 to 2016\",\n       x=\"Olympic Year\",\n       y=\"Mean Age\")\n\n\n\n\n\n\n\n\nScatter plot showing the mean age of Olympic athletes from 1896 to 2016."
+  },
+  {
+    "objectID": "presentation.html#outline",
+    "href": "presentation.html#outline",
+    "title": "Final Presentation",
+    "section": "Outline",
+    "text": "Outline\n\nPermutation test"
+  },
+  {
+    "objectID": "presentation.html#the-data",
+    "href": "presentation.html#the-data",
+    "title": "Final Presentation",
+    "section": "The Data",
+    "text": "The Data\n\nThe data used in this analysis comes from the English Women’s Football Database, created by Rob Clapp\nContains data from every match played in the top division (since 2011) and the second division (since 2014) of professional English women’s football"
+  },
+  {
+    "objectID": "presentation.html#the-data-1",
+    "href": "presentation.html#the-data-1",
+    "title": "Final Presentation",
+    "section": "The Data",
+    "text": "The Data\n\nlibrary(tidyverse)\newf_appearances&lt;- ewf_appearances |&gt;\n  select(match_name, date, home_team, away_team, win, loss, draw)\nhead(ewf_appearances)\n\n# A tibble: 6 × 7\n  match_name                    date       home_team away_team   win  loss  draw\n  &lt;chr&gt;                         &lt;date&gt;         &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Chelsea Ladies vs Arsenal La… 2011-04-13         1         0     0     1     0\n2 Chelsea Ladies vs Arsenal La… 2011-04-13         0         1     1     0     0\n3 Lincoln Ladies vs Doncaster … 2011-04-13         1         0     0     1     0\n4 Lincoln Ladies vs Doncaster … 2011-04-13         0         1     1     0     0\n5 Birmingham City Ladies vs Br… 2011-04-14         1         0     1     0     0\n6 Birmingham City Ladies vs Br… 2011-04-14         0         1     0     1     0"
+  },
+  {
+    "objectID": "presentation.html#eda",
+    "href": "presentation.html#eda",
+    "title": "Final Presentation",
+    "section": "EDA",
+    "text": "EDA"
+  },
+  {
+    "objectID": "presentation.html#eda-1",
+    "href": "presentation.html#eda-1",
+    "title": "Final Presentation",
+    "section": "EDA",
+    "text": "EDA"
+  },
+  {
+    "objectID": "presentation.html#question",
+    "href": "presentation.html#question",
+    "title": "Final Presentation",
+    "section": "Question",
+    "text": "Question\n \n\nIs there a home advantage in English women’s football?"
+  },
+  {
+    "objectID": "presentation.html#permutation",
+    "href": "presentation.html#permutation",
+    "title": "Final Presentation",
+    "section": "Permutation",
+    "text": "Permutation\nNull hypothesis: in professional women’s football, a team’s home status for a game has no influence on the outcome of the game \nTest statistic: win proportion\n\nset.seed(3)\npermutation &lt;- function(dataset, perm_n) {\n  dataset |&gt;\n    group_by(match_name) |&gt;\n    mutate(perm_home_team = sample(home_team, replace=FALSE)) |&gt;\n    ungroup() |&gt;\n    mutate(perm_n = perm_n)\n}\n\nshuffles &lt;- map_dfr(1:20, ~ permutation(ewf_appearances, .x))"
+  },
+  {
+    "objectID": "presentation.html#visual-lineup",
+    "href": "presentation.html#visual-lineup",
+    "title": "Final Presentation",
+    "section": "Visual Lineup",
+    "text": "Visual Lineup"
+  },
+  {
+    "objectID": "presentation.html#conclusions",
+    "href": "presentation.html#conclusions",
+    "title": "Final Presentation",
+    "section": "Conclusions",
+    "text": "Conclusions\n\nNo single plot stands out from the others as showing a much higher win proportion at home\nVisually, the null sampling distribution is similar to the observed data\nPlot 0 (observed data) has a higher proportion of wins at home than all of the other plots except number 2, which implies that this win proportion is entirely possible under the null\nVisual lineup implies that there is no significant home advantage in English professional women’s football"
   }
 ]
