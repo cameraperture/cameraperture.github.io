@@ -8,7 +8,7 @@
 
 <meta name="author" content="Charlotte Imbert">
 <meta name="dcterms.date" content="2024-09-13">
-<meta name="description" content="Analyzing 2021-2022 Premier League season match data from TidyTuesday">
+<meta name="description" content="Analyzing 2021-2022 Premier League season match data">
 
 <title>Charlotte Imbert - Premier League Soccer</title>
 <style>
@@ -192,11 +192,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The Data</a></li>
+  <li><a href="#fouls-and-relegation-status" id="toc-fouls-and-relegation-status" class="nav-link" data-scroll-target="#fouls-and-relegation-status">Fouls and Relegation Status</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -205,12 +213,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    <p>Analyzing 2021-2022 Premier League season match data from TidyTuesday</p>
+    <p>Analyzing 2021-2022 Premier League season match data</p>
   </div>
 </div>
 
 
-<div class="quarto-title-meta column-page">
+<div class="quarto-title-meta column-page-left">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -234,13 +242,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>The data for this analysis was accessed via <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04" class="uri">https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04</a> . The data is from the <a href="#0">Premier League Match Data 2021-2022</a>&nbsp;via&nbsp;<a href="#0">Evan Gower</a> on Kaggle. The dataset contains information about soccer matches in the 2021-2022 English Premier League season.</p>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<p>The dataset for this analysis was accessed via <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04" class="uri">https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04</a> . The data is from the <a href="#0">Premier League Match Data 2021-2022</a>&nbsp;via&nbsp;<a href="#0">Evan Gower</a> on Kaggle. The dataset contains information about soccer matches in the 2021-2022 English Premier League season, including the date, referee, home and away team, full-time home and away goals, home and away fouls, in addition other information for each match.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytuesdayR)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>soccer <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-04/soccer21-22.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>I am interested in identifying trends between the total number of fouls a team commits and their relegation status. Firstly, listing teams in descending order of total fouls at home:</p>
+</section>
+<section id="fouls-and-relegation-status" class="level2">
+<h2 class="anchored" data-anchor-id="fouls-and-relegation-status">Fouls and Relegation Status</h2>
+<p>I am interested in identifying trends between the total number of fouls a team commits and their relegation status. The bottom three teams at the end of each season are relegated to the Championship. Relegation status for this analysis is based on the season-end Premier League standings in 2022, obtained from the Premier League website at <a href="https://www.premierleague.com/tables?co=1&amp;se=418&amp;ha=-1" class="uri">https://www.premierleague.com/tables?co=1&amp;se=418&amp;ha=-1</a>.</p>
+<p>Firstly, listing teams in descending order of total fouls at home:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>soccer_summary<span class="ot">&lt;-</span>soccer <span class="sc">|&gt;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HomeTeam) <span class="sc">|&gt;</span></span>
@@ -279,6 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Horizontal bar plot showing the total number of fouls in home games for each team in the 2021-2022 Premier League season. Teams that were relegated at the end of the season are colored in navy blue.</p>
 <p>Is this relationship different when teams are playing away from home?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soccer_summary2<span class="ot">&lt;-</span> soccer <span class="sc">|&gt;</span></span>
@@ -317,10 +332,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>Horizontal bar plot showing the total number of fouls in away games for each team in the 2021-2022 Premier League season. Teams that were relegated at the end of the season are colored in red.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>Based on these plots, a team’s total number of fouls does not seem to influence their relegation status. For example, Norwich had one of the lowest number of fouls away from home but still faced relegation.</p>
 <p>We can also see that home status does not really influence the total number of fouls committed by a team: Leeds and Manchester City are top and bottom, respectively, for the number of fouls both at home and away. The majority of the teams in the league committed a similar total number of fouls at home and away. Manchester United are an exception as they committed the second highest number of fouls away, compared to the fifth lowest at home.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
