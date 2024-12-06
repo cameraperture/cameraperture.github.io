@@ -1,11 +1,13 @@
 ---
 title: "Olympics"
 description: |
-  Analyzing 120 years of Olympics data from TidyTuesday
+  Analyzing 120 years of Olympics data
 author: Charlotte Imbert
 date: September 13, 2024
 format: html
 ---
+
+## The Data
 
 Data for this analysis was accessed from the TidyTuesday GitHub repository at <https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27> . Data was scraped from [www.sports-reference.com](http://www.sports-reference.com/) in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.
 
@@ -15,32 +17,48 @@ library(tidyverse)
 olympics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')
 ```
 
+## Visualizations
+
+I am interested in observing several trends in Olympic data over time. The first is the trend in female Olympians over time, and the second is the trend in Olympians' ages over time.
+
+The scatter plot below aims to examine both trends in one visualization. We can see that the number of female athletes considerably increased over the years, especially since the 1980s. An interesting trend is that there are far more young (below the age of 25) female than male Olympians. Above this age, there is no clear trend is male or female representation.
+
 ```{r warning=FALSE, message=FALSE}
-ggplot(olympics, aes(x=year, y=age))+
-  geom_point(aes(color=sex))+
+ggplot(olympics, aes(x=year, y=age)) +
+  geom_point(aes(color=sex)) +
   theme_minimal()
 ```
 
+Scatter plot showing the age of athletes over the years from 1896 to 2016. Male athletes are represented in blue, and female athletes are represented in red.
+
+This data can alternatively be presented through a stacked histogram. This visualization emphasizes the disparity in the number of female Olympians compared to male Olympians.
+
 ```{r warning=FALSE, message=FALSE}
-ggplot(olympics, aes(x=age))+
-  geom_histogram(aes(fill=sex))+
+ggplot(olympics, aes(x=age)) +
+  geom_histogram(aes(fill=sex)) +
   theme_minimal()
 ```
 
+Stacked histogram showing the number of Olympic athletes for each age (by year), for all Olympians between 1896 and 2016. Male athletes are represented in blue, and female athletes are represented in red.
+
 ```{r warning=FALSE, message=FALSE}
-olympics_nona <- olympics[!is.na(olympics$age), ]
-olympics_meanage<-olympics_nona%>%
-  group_by(year)%>%
+olympics_nona<- olympics[!is.na(olympics$age), ]
+olympics_meanage<- olympics_nona |>
+  group_by(year) |>
   summarize(avg_age=(mean(age)))
 ```
+
+This final visualization aims to display the trend in the mean age of Olympians over time. An overarching trend that can be seen is that the mean age of athletes increased from 1896 to 1932; it then decreased steadily until 1980, and has been increasing steadily since then. Two outliers are worth pointing out. The very first Olympics in 1896 has an unusually low mean age of approximately 23.5 years, while the 1932 Olympics had an unusually high mean age of around 32.5 years.
 
 ```{r warning=FALSE, message=FALSE}
 ggplot(olympics_meanage, aes(x=year, y=avg_age)) +
   geom_point(shape=16, size=2, color="goldenrod4") +
-  geom_smooth(color="#90EE90", fill="#90EE90", se=FALSE)+
-  theme_minimal()+
+  geom_smooth(color="#90EE90", fill="#90EE90", se=FALSE) +
+  theme_minimal() +
   labs(title = "Mean Age of Athletes at the Olympics",
        subtitle = "1896 to 2016",
        x="Olympic Year",
        y="Mean Age")
 ```
+
+Scatter plot showing the mean age of Olympic athletes from 1896 to 2016.

@@ -123,7 +123,7 @@
     "href": "olympics.html",
     "title": "Olympics",
     "section": "",
-    "text": "Data for this analysis was accessed from the TidyTuesday GitHub repository at https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27 . Data was scraped from www.sports-reference.com in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.\n\nlibrary(tidytuesdayR)\nlibrary(tidyverse)\nolympics &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')\n\n\nggplot(olympics, aes(x=year, y=age))+\n  geom_point(aes(color=sex))+\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nggplot(olympics, aes(x=age))+\n  geom_histogram(aes(fill=sex))+\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nolympics_nona &lt;- olympics[!is.na(olympics$age), ]\nolympics_meanage&lt;-olympics_nona%&gt;%\n  group_by(year)%&gt;%\n  summarize(avg_age=(mean(age)))\n\n\nggplot(olympics_meanage, aes(x=year, y=avg_age)) +\n  geom_point(shape=16, size=2, color=\"goldenrod4\") +\n  geom_smooth(color=\"#90EE90\", fill=\"#90EE90\", se=FALSE)+\n  theme_minimal()+\n  labs(title = \"Mean Age of Athletes at the Olympics\",\n       subtitle = \"1896 to 2016\",\n       x=\"Olympic Year\",\n       y=\"Mean Age\")"
+    "text": "Data for this analysis was accessed from the TidyTuesday GitHub repository at https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27 . Data was scraped from www.sports-reference.com in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.\n\nlibrary(tidytuesdayR)\nlibrary(tidyverse)\nolympics &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')"
   },
   {
     "objectID": "atp.html",
@@ -208,5 +208,19 @@
     "title": "Premier League Soccer",
     "section": "Conclusion",
     "text": "Conclusion\nBased on these plots, a team’s total number of fouls does not seem to influence their relegation status. For example, Norwich had one of the lowest number of fouls away from home but still faced relegation.\nWe can also see that home status does not really influence the total number of fouls committed by a team: Leeds and Manchester City are top and bottom, respectively, for the number of fouls both at home and away. The majority of the teams in the league committed a similar total number of fouls at home and away. Manchester United are an exception as they committed the second highest number of fouls away, compared to the fifth lowest at home."
+  },
+  {
+    "objectID": "olympics.html#the-data",
+    "href": "olympics.html#the-data",
+    "title": "Olympics",
+    "section": "",
+    "text": "Data for this analysis was accessed from the TidyTuesday GitHub repository at https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-07-27 . Data was scraped from www.sports-reference.com in May 2018 and contains historical Olympics data from Athens 1896 to Rio 2016.\n\nlibrary(tidytuesdayR)\nlibrary(tidyverse)\nolympics &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-27/olympics.csv')"
+  },
+  {
+    "objectID": "olympics.html#visualizations",
+    "href": "olympics.html#visualizations",
+    "title": "Olympics",
+    "section": "Visualizations",
+    "text": "Visualizations\nI am interested in observing several trends in Olympic data over time. The first is the trend in female Olympians over time, and the second is the trend in Olympians’ ages over time.\nThe scatter plot below aims to examine both trends in one visualization. We can see that the number of female athletes considerably increased over the years, especially since the 1980s. An interesting trend is that there are far more young (below the age of 25) female than male Olympians. Above this age, there is no clear trend is male or female representation.\n\nggplot(olympics, aes(x=year, y=age)) +\n  geom_point(aes(color=sex)) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nScatter plot showing the age of athletes over the years from 1896 to 2016. Male athletes are represented in blue, and female athletes are represented in red.\nThis data can alternatively be presented through a stacked histogram. This visualization emphasizes the disparity in the number of female Olympians compared to male Olympians.\n\nggplot(olympics, aes(x=age)) +\n  geom_histogram(aes(fill=sex)) +\n  theme_minimal()\n\n\n\n\n\n\n\n\nStacked histogram showing the number of Olympic athletes for each age (by year), for all Olympians between 1896 and 2016. Male athletes are represented in blue, and female athletes are represented in red.\n\nolympics_nona&lt;- olympics[!is.na(olympics$age), ]\nolympics_meanage&lt;- olympics_nona |&gt;\n  group_by(year) |&gt;\n  summarize(avg_age=(mean(age)))\n\nThis final visualization aims to display the trend in the mean age of Olympians over time. An overarching trend that can be seen is that the mean age of athletes increased from 1896 to 1932; it then decreased steadily until 1980, and has been increasing steadily since then. Two outliers are worth pointing out. The very first Olympics in 1896 has an unusually low mean age of approximately 23.5 years, while the 1932 Olympics had an unusually high mean age of around 32.5 years.\n\nggplot(olympics_meanage, aes(x=year, y=avg_age)) +\n  geom_point(shape=16, size=2, color=\"goldenrod4\") +\n  geom_smooth(color=\"#90EE90\", fill=\"#90EE90\", se=FALSE) +\n  theme_minimal() +\n  labs(title = \"Mean Age of Athletes at the Olympics\",\n       subtitle = \"1896 to 2016\",\n       x=\"Olympic Year\",\n       y=\"Mean Age\")\n\n\n\n\n\n\n\n\nScatter plot showing the mean age of Olympic athletes from 1896 to 2016."
   }
 ]
