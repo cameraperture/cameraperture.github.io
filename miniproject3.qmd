@@ -7,6 +7,8 @@ date: November 4, 2024
 format: html
 ---
 
+<a href="presentation.html">View My Final Presentation on this project</a>
+
 # The Data
 
 The data for this analysis was accessed from the TidyTuesday GitHub repository at <https://github.com/rfordatascience/tidytuesday/tree/master/data/2024/2024-07-16>. The original data is from the English Women's Football (EWF) Database, created by Rob Clapp, available at <https://github.com/probjects/ewf-database>. The dataset contains information on every match played in the English Women's Super League (WSL), which is the top division of professional women's football, since 2011, as well as every match played in the Women's Championship, the second division of professional women's football, since 2014.
