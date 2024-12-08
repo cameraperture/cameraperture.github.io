@@ -95,6 +95,10 @@ shuffles <- map_dfr(1:20, ~ permutation(ewf_appearances, .x))
 ```
 
 ```{r}
+#the data is grouped by match name, and basically permutes the home team for each match, so that it either stays the same or is swapped, the result stays the same
+```
+
+```{r}
 shuffles |>
   ggplot(aes(x = as.factor(perm_home_team), fill = result)) +
   geom_bar(position = "fill") +

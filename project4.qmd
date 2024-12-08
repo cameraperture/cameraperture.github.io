@@ -3,12 +3,13 @@ title: "SQL"
 description: |
   Using SQL to visualize Wideband Acoustic Immitance data
 format: html
+bibliography: references_wai.bib
 date: November 20, 2024"
 ---
 
 # Project Description
 
-For this project, I will be using SQL to query Smith College's Wideband Acoustic Immittance (WAI) Database, which contains WAI ear measurements from a multitude of scientific publications. The WAI Database is available at <https://www.science.smith.edu/wai-database/>. My goal is twofold. First, I aim to use SQL and ggplot to replicate Figure 1 from Susan Voss' 2020 study, "An online wideband acoustic immittance (WAI) database and corresponding website", available at <https://pmc.ncbi.nlm.nih.gov/articles/PMC7093226/>. Second, I aim to produce a plot showing race differences in frequency versus mean absorption for one specific study in the WAI database (done in 2010 study by Voss et al.).
+For this project, I will be using SQL to query Smith College's Wideband Acoustic Immittance (WAI) Database, which contains WAI ear measurements from a multitude of scientific publications. The WAI Database is available at <https://www.science.smith.edu/wai-database/>. My goal is twofold. First, I aim to use SQL and ggplot to replicate Figure 1 from Susan Voss' 2019 study, "An online wideband acoustic immittance (WAI) database and corresponding website" [@voss2019]. Second, I aim to produce a plot showing race differences in frequency versus mean absorption for one specific study in the WAI database (done in 2010 study by Voss et al.).
 
 ## Data Familiarization
 
@@ -62,38 +63,11 @@ LIMIT 0, 5;
 
 PI_Info contains information about the authors, year, journal and title of each study in the database. This will be useful for including the primary author and date of publication in the replicated figure legend.
 
-## Replicating the Figure from Voss, 2020
+## Replicating the Figure from Voss, 2019
 
 ```{sql}
 #| connection: con_wai
-#| output.var: "graph"
-SELECT Identifier, Frequency, LOG10(Frequency) AS log_frequency,  AVG(Absorbance) AS mean_absorbance 
-FROM Measurements
-WHERE Identifier IN ("Abur_2014", "Feeney_2017", "Groon_2015" ,"Lewis_2015", "Liu_2008", "Rosowski_2012", "Shahnaz_2006", "Shaver_2013" , "Sun_2016", "Voss_1994", "Voss_2010", "Werner_2010") AND Frequency > 200 AND Frequency < 8000
-GROUP BY Identifier, Frequency;  
-```
-
-```{r warning=FALSE, message=FALSE}
-graph |>
-ggplot(aes (x=Frequency, y = mean_absorbance, 
-   color =  Identifier,
-   group = Identifier)) +
-  geom_line() +
-  scale_x_log10() +
-  labs(title = "Mean absorbance from each publication in WAI database",
-      x = "Frequency (Hz)",
-      y = "Mean Absorbance",
-      color = "Study") +
-  xlim(200, 8000) +
-  ylim(0, 1) +
-  theme_minimal()
-```
-
-This plot is not an identical replication of the figure in Voss' 2020 study, but it is closely similar. It displays frequency versus mean absorbance measurements for the 12 studies included in the WAI database (as of July 2019). The number of unique ears as well as the equipment used in each study is missing from the legend above. This information is included in the figure I am trying to replicate, so it needs to be displayed here.
-
-```{sql}
-#| connection: con_wai
-#| output.var: "plot2"
+#| output.var: "plot"
 SELECT p.Identifier, p.Year, p.AuthorsShortList, Frequency,
 LOG10(Frequency) AS log_frequency, AVG(Absorbance) AS mean_absorbance,
 COUNT(DISTINCT SubjectNumber, Ear) AS ear_u,
@@ -105,24 +79,28 @@ GROUP BY Identifier, Instrument, Frequency;
 ```
 
 ```{r warning=FALSE, message=FALSE}
-plot2 |>
+plot |>
 ggplot(aes(x = Frequency, y = mean_absorbance,
   color = legend,
   group = legend)) +
   geom_line() +
-  scale_x_log10() +
+  scale_x_log10(breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000)) +
   labs(title = "Mean absorbance from each publication in WAI database",
       x = "Frequency (Hz)",
       y = "Mean Absorbance",
       color = "Study, No of individual ears, Equipment") +
-  xlim(200, 8000) +
-  ylim(0, 1) +
+  coord_cartesian(xlim = c(200, 8000), ylim = c(0, 1)) +
   theme_minimal() +
-  theme(legend.text = element_text(size = 6),
-        legend.title = element_text(size = 8))
+  theme(legend.text = element_text(size = 4),
+        legend.title = element_text(size = 6),
+        legend.position = c(0.01, 0.98),
+        legend.justification = c("left", "top"),
+        legend.key.size = unit(0.4, "lines"),
+    legend.background = element_rect(fill = "white", color = "black")
+  )
 ```
 
-This plot is identical to the previous one, except that the legend now includes the number of unique ears and the equipment used in the study.
+This plot above is a replication of the figure in Voss' 2019 study [@voss2019]. It displays frequency versus mean absorbance measurements for the 12 studies included in the WAI database (as of July 2019). The authors, number of unique ears and equipment used for each study is indicated in the legend in the top left.
 
 ## Race Differences in Mean Absorbance
 
@@ -144,19 +122,25 @@ head(groups_graph)
 groups_graph |>
   ggplot(aes(x = Frequency, y = mean_absorbance)) +
            geom_line(aes(color = Race)) +
-  scale_x_log10() +
+  scale_x_log10(breaks = c(200, 400, 600, 800, 1000, 2000, 4000, 6000, 8000)) +
   labs(title = "Differences in Mean Absorbance by Race",
        subtitle = "Voss et al., 2010",
       x = "Frequency (Hz)",
       y = "Mean Absorbance",
       color = "Race") +
-  xlim(200, 6000) +
-  ylim(0, 1) +
-  theme_minimal()
+  coord_cartesian(xlim = c(200, 8000), ylim = c(0, 1)) +
+  theme_minimal() +
+    theme(legend.text = element_text(size = 6),
+        legend.title = element_text(size = 8),
+        legend.position = c(0.05, 0.98),
+        legend.justification = c("left", "top"),
+        legend.key.size = unit(0.6, "lines"),
+    legend.background = element_rect(fill = "white", color = "black")
+  )
 ```
 
 I chose to look at differences in mean absorbance for each frequency band by race in one specific study conducted by Voss et al. in 2010. I chose this study because of its large number of participants (1984), which should help to make trends in the data more clear. Each line represents a different race included in the study. It can be seen from the graph that mean absorbance follows very similar trends for White, Caucasian and Asian participants. Meanwhile, the mean absorbances for African American, Black and Mixed participants are noticeably different from those of the other races. Notably, African American participants tend to have a higher mean absorbance for the same frequencies than the other races included in the study, especially for frequencies between 1000 Hz and 5000 Hz. Mixed participants tend to have lower mean absorbances than the other races in the study for frequencies between 2000 Hz and 4000 Hz.
 
 ## Conclusion
 
-In this project I used SQL queries to obtain the necessary information from the relevant tables in the WAI database (Subjects, Measurements and PI_Info). These SQL queries enabled me to save the data as R objects, from which I could produce graphs using ggplot. I was able to closely replicate Figure 1 from Voss' 2020 study, and I also produced a graph that showed clear race differences in mean absorbance for Voss et al.'s 2010 study.
+In this project I used SQL queries to obtain the necessary information from the relevant tables in the WAI database (Subjects, Measurements and PI_Info). These SQL queries enabled me to save the data as R objects, from which I could produce graphs using ggplot. I was able to replicate Figure 1 from Voss' 2019 study [@voss2019], and I also produced a graph that showed clear race differences in mean absorbance for Voss et al.'s 2010 study.
