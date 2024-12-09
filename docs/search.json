@@ -233,56 +233,56 @@
   {
     "objectID": "presentation.html#the-data",
     "href": "presentation.html#the-data",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "The Data",
     "text": "The Data\n\nThe data used in this analysis comes from the English Women’s Football Database, created by Rob Clapp\nContains data from every match played in the top division (since 2011) and the second division (since 2014) of professional English women’s football"
   },
   {
     "objectID": "presentation.html#the-data-1",
     "href": "presentation.html#the-data-1",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "The Data",
     "text": "The Data\n\nlibrary(tidyverse)\newf_appearances&lt;- ewf_appearances |&gt;\n  select(match_name, date, home_team, away_team, win, loss, draw)\nhead(ewf_appearances)\n\n# A tibble: 6 × 7\n  match_name                    date       home_team away_team   win  loss  draw\n  &lt;chr&gt;                         &lt;date&gt;         &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 Chelsea Ladies vs Arsenal La… 2011-04-13         1         0     0     1     0\n2 Chelsea Ladies vs Arsenal La… 2011-04-13         0         1     1     0     0\n3 Lincoln Ladies vs Doncaster … 2011-04-13         1         0     0     1     0\n4 Lincoln Ladies vs Doncaster … 2011-04-13         0         1     1     0     0\n5 Birmingham City Ladies vs Br… 2011-04-14         1         0     1     0     0\n6 Birmingham City Ladies vs Br… 2011-04-14         0         1     0     1     0"
   },
   {
     "objectID": "presentation.html#eda",
     "href": "presentation.html#eda",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "EDA",
     "text": "EDA"
   },
   {
     "objectID": "presentation.html#eda-1",
     "href": "presentation.html#eda-1",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "EDA",
     "text": "EDA"
   },
   {
     "objectID": "presentation.html#question",
     "href": "presentation.html#question",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "Question",
     "text": "Question\n \n\nIs there a home advantage in English women’s football?"
   },
   {
     "objectID": "presentation.html#permutation",
     "href": "presentation.html#permutation",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "Permutation",
     "text": "Permutation\nNull hypothesis: in professional women’s football, a team’s home status for a game has no influence on the outcome of the game \nTest statistic: win proportion\n\nset.seed(3)\npermutation &lt;- function(dataset, perm_n) {\n  dataset |&gt;\n    group_by(match_name) |&gt;\n    mutate(perm_home_team = sample(home_team, replace=FALSE)) |&gt;\n    ungroup() |&gt;\n    mutate(perm_n = perm_n)\n}\n\nshuffles &lt;- map_dfr(1:20, ~ permutation(ewf_appearances, .x))"
   },
   {
     "objectID": "presentation.html#visual-lineup",
     "href": "presentation.html#visual-lineup",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "Visual Lineup",
     "text": "Visual Lineup"
   },
   {
     "objectID": "presentation.html#conclusions",
     "href": "presentation.html#conclusions",
-    "title": "Final Presentation",
+    "title": "Visual Inference on English Women’s Football Data",
     "section": "Conclusions",
     "text": "Conclusions\n\nNo single plot stands out from the others as showing a much higher win proportion at home\nVisually, the null sampling distribution is similar to the observed data\nPlot 0 (observed data) has a higher proportion of wins at home than all of the other plots except number 2, which implies that this win proportion is entirely possible under the null\nVisual lineup implies that there is no significant home advantage in English professional women’s football"
   },

@@ -1,5 +1,5 @@
 ---
-title: "Final Presentation"
+title: "Visual Inference on English Women's Football Data"
 author: "Charlotte Imbert"
 subtitle: "12/9/2024"
 format:
