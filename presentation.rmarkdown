@@ -1,0 +1,169 @@
+---
+title: "Visual Inference on English Women's Football Data"
+author: "Charlotte Imbert"
+subtitle: "12/9/2024"
+format:
+  revealjs:
+    scrollable: true
+    slide-number: true
+    show-slide-number: all
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+ewf_appearances <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-07-16/ewf_appearances.csv')
+ewf_matches <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-07-16/ewf_matches.csv')
+ewf_standings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2024/2024-07-16/ewf_standings.csv')
+```
+
+
+
+## The Data
+
+
+- The data used in this analysis comes from the [English Women's Football Database](https://github.com/probjects/ewf-database), created by Rob Clapp
+
+- Contains data from every match played in the top division (since 2011) and the second division (since 2014) of professional English women's football
+
+## The Data
+
+
+```{r}
+library(tidyverse)
+ewf_appearances<- ewf_appearances |>
+  select(match_name, date, home_team, away_team, win, loss, draw)
+head(ewf_appearances)
+```
+
+
+## EDA
+
+
+```{r include = FALSE, echo=FALSE}
+ewf_appearances<- na.omit(ewf_appearances)
+ewf_appearances$result <- ifelse(ewf_appearances$win == 1, "Win",
+                        ifelse(ewf_appearances$loss == 1, "Loss", "Draw"))
+
+ewf_table <- table(ewf_appearances$home_team, ewf_appearances$result)
+print(ewf_table)
+```
+
+```{r echo=FALSE}
+df <- as.data.frame(ewf_table)
+colnames(df) <- c("home", "result", "frequency")
+
+ggplot(df, aes(x = home, y = result, fill = frequency)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "maroon", limits = c(0, 1100)) +
+  labs(title = "Home Status vs. Match Outcome in English Women's Football",
+       x = "Home Status",
+       y = "Outcome",
+       fill = "Frequency") +
+  theme_minimal()
+```
+
+
+## EDA
+
+
+```{r, echo=FALSE}
+ewf<- ewf_appearances |>
+  select(home_team, result)
+
+ewf |>
+  ggplot(aes(x = as.factor(home_team), fill = result)) +
+  geom_bar(position = "fill") +
+  labs(x = "Home Status (1 = Home, 0 = Away)", y = "Proportion", fill = "Outcome") +
+  theme_minimal() +
+  ggtitle("Home Status vs. Match Result in English Women's Football")
+```
+
+
+## Question
+
+
+<br>
+<br>
+
+::: {style="text-align: center; font-size: 2em;"}
+Is there a home advantage in English women's football?
+:::
+
+
+## Permutation
+
+**Null hypothesis:** in professional women's football, a team's home status for a game has no influence on the outcome of the game
+<br>
+
+**Test statistic:** win proportion
+
+
+```{r}
+set.seed(3)
+permutation <- function(dataset, perm_n) {
+  dataset |>
+    group_by(match_name) |>
+    mutate(perm_home_team = sample(home_team, replace=FALSE)) |>
+    ungroup() |>
+    mutate(perm_n = perm_n)
+}
+
+shuffles <- map_dfr(1:20, ~ permutation(ewf_appearances, .x))
+```
+
+
+## Visual Lineup
+
+
+```{r, echo=FALSE}
+#| fig-width: 110
+#| fig-height: 90
+#| fig-align: center
+set.seed(3)
+
+observed <- ewf_appearances |>
+  mutate(perm_home_team = home_team, perm_n = 0) |>
+  select(perm_home_team, result, perm_n)
+
+shuffles <- map_dfr(1:20, ~ permutation(ewf_appearances, .x))|>
+  select(perm_home_team, result, perm_n)
+
+perm_combined <- rbind(observed, shuffles)
+  
+plots<- perm_combined |>
+  mutate(perm_n = factor(perm_n, levels = c(0, 1:20))) |>
+  ggplot(aes(x = as.factor(perm_home_team), fill = result)) +
+  geom_bar(position = "fill") +
+  labs(x = "Home Team (1 = Home, 0 = Away)", 
+       y = "Proportion", 
+       fill = "Result") +
+  ggtitle("Home Status vs. Match Result in English Women's Football") +
+  theme_minimal() +
+  facet_wrap(~ perm_n, ncol = 4) +
+  theme(
+    plot.title = element_text(size = 100, face = "bold"),         
+    axis.title.x = element_text(size = 90),                      
+    axis.title.y = element_text(size = 90),                     
+    axis.text.x = element_text(size = 80),                       
+    axis.text.y = element_text(size = 75),                       
+    legend.title = element_text(size = 90),                      
+    legend.text = element_text(size = 88),                       
+    strip.text = element_text(size = 70)                         
+  )
+print(plots)
+```
+
+
+## Conclusions
+
+- No single plot stands out from the others as showing a much higher win proportion at home
+
+- Visually, the null sampling distribution is similar to the observed data
+
+- Plot 0 (observed data) has a higher proportion of wins at home than all of the other plots except number 2, which implies that this win proportion is entirely possible under the null
+
+- Visual lineup implies that there is no significant home advantage in English professional women's football
