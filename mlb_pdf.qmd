@@ -1,6 +1,7 @@
 ---
 title: "MLB Data Challenge"
 author: "Charlotte Imbert"
+date: "January 13, 2025"
 ---
 
 ## Connecticut Sports Analytics Symposium 2025 Major League Baseball Data Challenge
