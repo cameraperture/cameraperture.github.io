@@ -7,8 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Charlotte Imbert">
+<meta name="dcterms.date" content="2024-09-13">
+<meta name="description" content="Analyzing 2021-2022 Premier League season match data">
 
-<title>Charlotte Imbert - MLB Data Challenge</title>
+<title>Charlotte Imbert - Premier League Soccer</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -169,7 +205,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#connecticut-sports-analytics-symposium-2025-major-league-baseball-data-challenge" id="toc-connecticut-sports-analytics-symposium-2025-major-league-baseball-data-challenge" class="nav-link active" data-scroll-target="#connecticut-sports-analytics-symposium-2025-major-league-baseball-data-challenge">Connecticut Sports Analytics Symposium 2025 Major League Baseball Data Challenge</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The Data</a></li>
+  <li><a href="#fouls-and-relegation-status" id="toc-fouls-and-relegation-status" class="nav-link" data-scroll-target="#fouls-and-relegation-status">Fouls and Relegation Status</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -178,9 +216,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">MLB Data Challenge</h1>
+<h1 class="title">Premier League Soccer</h1>
 </div>
 
+<div>
+  <div class="description">
+    <p>Analyzing 2021-2022 Premier League season match data</p>
+  </div>
+</div>
 
 
 <div class="quarto-title-meta column-page-left">
@@ -192,6 +235,12 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 13, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -201,10 +250,102 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="connecticut-sports-analytics-symposium-2025-major-league-baseball-data-challenge" class="level2">
-<h2 class="anchored" data-anchor-id="connecticut-sports-analytics-symposium-2025-major-league-baseball-data-challenge">Connecticut Sports Analytics Symposium 2025 Major League Baseball Data Challenge</h2>
-<iframe src="docs/csas.pdf" width="100%" height="800px">
-</iframe>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<p>The dataset for this analysis was accessed via <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04" class="uri">https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-04-04</a> . The data is from the <a href="#0">Premier League Match Data 2021-2022</a>&nbsp;via&nbsp;<a href="#0">Evan Gower</a> on Kaggle. The dataset contains information about soccer matches in the 2021-2022 English Premier League season, including the date, referee, home and away team, full-time home and away goals, home and away fouls, in addition other information for each match.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytuesdayR)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>soccer <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-04/soccer21-22.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fouls-and-relegation-status" class="level2">
+<h2 class="anchored" data-anchor-id="fouls-and-relegation-status">Fouls and Relegation Status</h2>
+<p>I am interested in identifying trends between the total number of fouls a team commits and their relegation status. The bottom three teams at the end of each season are relegated to the Championship. Relegation status for this analysis is based on the season-end Premier League standings in 2022, obtained from the Premier League website at <a href="https://www.premierleague.com/tables?co=1&amp;se=418&amp;ha=-1" class="uri">https://www.premierleague.com/tables?co=1&amp;se=418&amp;ha=-1</a>.</p>
+<p>Firstly, listing teams in descending order of total fouls at home:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>soccer_summary<span class="ot">&lt;-</span>soccer <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(HomeTeam) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">totalfouls=</span><span class="fu">sum</span>(HF)) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(totalfouls))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soccer_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  HomeTeam       totalfouls
+  &lt;chr&gt;               &lt;dbl&gt;
+1 Leeds                 236
+2 Watford               215
+3 Chelsea               213
+4 Crystal Palace        210
+5 Newcastle             209
+6 Brighton              208</code></pre>
+</div>
+</div>
+<p>Now, plotting this relationship and highlighting the teams that were relegated at the end of the season, in navy blue:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot<span class="ot">&lt;-</span><span class="fu">ggplot</span>(soccer_summary, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(HomeTeam, totalfouls), <span class="at">y=</span>totalfouls)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(HomeTeam <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Burnley"</span>, <span class="st">"Norwich"</span>, <span class="st">"Watford"</span>), <span class="st">"Relegated"</span>, <span class="st">"Safe"</span>))) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Relegated"</span> <span class="ot">=</span> <span class="st">"navyblue"</span>, <span class="st">"Safe"</span> <span class="ot">=</span> <span class="st">"lightblue"</span>)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Premier League Fouls by Team, 2021-2022"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"Home Games"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Total Number of Fouls"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Team"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Relegation Status"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plot <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="premierleague_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Horizontal bar plot showing the total number of fouls in home games for each team in the 2021-2022 Premier League season. Teams that were relegated at the end of the season are colored in navy blue.</p>
+<p>Is this relationship different when teams are playing away from home?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soccer_summary2<span class="ot">&lt;-</span> soccer <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(AwayTeam) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">totalfouls_a=</span><span class="fu">sum</span>(AF)) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(totalfouls_a))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soccer_summary2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  AwayTeam       totalfouls_a
+  &lt;chr&gt;                 &lt;dbl&gt;
+1 Leeds                   233
+2 Man United              226
+3 Watford                 225
+4 Aston Villa             211
+5 Crystal Palace          205
+6 Everton                 201</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(soccer_summary2, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(AwayTeam, totalfouls_a), <span class="at">y=</span>totalfouls_a)) <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">ifelse</span>(AwayTeam <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Burnley"</span>, <span class="st">"Norwich"</span>, <span class="st">"Watford"</span>), <span class="st">"Relegated"</span>, <span class="st">"Safe"</span>))) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Relegated"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Safe"</span> <span class="ot">=</span> <span class="st">"lightpink"</span>)) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Premier League Fouls by Team, 2021-2022"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle=</span><span class="st">"Away Games"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">"Total Number of Fouls"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Team"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill=</span><span class="st">"Relegation Status"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plot2 <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="premierleague_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Horizontal bar plot showing the total number of fouls in away games for each team in the 2021-2022 Premier League season. Teams that were relegated at the end of the season are colored in red.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Based on these plots, a team’s total number of fouls does not seem to influence their relegation status. For example, Norwich had one of the lowest number of fouls away from home but still faced relegation.</p>
+<p>We can also see that home status does not really influence the total number of fouls committed by a team: Leeds and Manchester City are top and bottom, respectively, for the number of fouls both at home and away. The majority of the teams in the league committed a similar total number of fouls at home and away. Manchester United are an exception as they committed the second highest number of fouls away, compared to the fifth lowest at home.</p>
 
 
 </section>
