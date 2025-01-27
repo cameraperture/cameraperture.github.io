@@ -10,6 +10,8 @@ website:
         href: index.qmd
       - text: "Statistical Analyses"
         menu: 
+          - text: "MLB Bat Speed and Swing Length"
+            href: mlb_pdf.qmd
           - text: "How to Win in Tennis"
             href: atp.html
       - text: "Data Visualization"

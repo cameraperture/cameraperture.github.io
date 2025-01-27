@@ -1,0 +1,10 @@
+---
+title: "MLB Data Challenge"
+author: "Charlotte Imbert"
+---
+
+## Connecticut Sports Analytics Symposium 2025 Major League Baseball Data Challenge
+
+<iframe src="docs/CSAS_Baseball_Analytics_2025-Final-Report.pdf" width="100%" height="800px">
+
+</iframe>
