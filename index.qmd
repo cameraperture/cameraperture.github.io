@@ -26,4 +26,8 @@ Now, I’m especially interested in how data science can help us better understa
 This site serves as a portfolio of my work, where I showcase data science projects and statistical analyses. If you’d like to connect or collaborate, feel free to reach out!
 
 ![](wimby.jpg){width=30%}  
-Working at Wimbledon in 2022  
+Working at Wimbledon in 2022
+
+![](datafest.jpg){width=45%} ![](datafest2.jpg){width=40%}
+Representing Pomona College at DataFest @ UCLA in 2023!
+
