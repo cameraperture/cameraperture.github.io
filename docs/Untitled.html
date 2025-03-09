@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2023-02-11">
 
-<title>Charlotte Imbert</title>
+<title>Charlotte Imbert - 158 - Homework 4</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,6 +34,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
@@ -68,6 +70,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -90,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -166,31 +197,63 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section">1.</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2.</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<div class="quarto-about-jolla content column-page">
-  <img src="stanford.jpg" class="about-image
-  rectangle " style="width: 17em;">
- <main class="content column-page" id="quarto-document-content">
-<p>Welcome! My name is Charlotte Imbert and I’m a senior at Pomona College. I am majoring in Neuroscience with a minor in Math. I love Statistics and ML and am currently working on a research project aiming to predict cognitive function from neuroimaging (fMRI) data.</p>
-<p>When I’m not studying or doing research, I love to play pickleball and perform stand-up comedy. Additionally, I love Daft Punk, Taylor Swift, and visiting National Parks. I am a French and British dual citizen, and I speak fluent French, Spanish and Portuguese.</p>
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">158 - Homework 4</h1>
+</div>
 
 
-</main> 
-  <hr class="about-sep">
-   <div class="about-links">
-  <a href="https://www.linkedin.com/in/charlotte-imbert-491a051a5" class="about-link" rel="" target="">
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/cameraperture/cameraperture.github.io" class="about-link" rel="" target="">
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="mailto:ciaa2020@mymail.pomona.edu" class="about-link" rel="" target="">
-     <span class="about-link-text">Email</span>
-  </a>
-</div>
-</div>
- <!-- /main -->
+
+<div class="quarto-title-meta column-page-left">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 11, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="section" class="level1">
+<h1>1.</h1>
+<p>We have the model <span class="math inline">\(y_i=\beta_0+\beta_1 x_i + \epsilon_i\)</span>. We can compute the residuals <span class="math inline">\(e_i=y_i-\hat{\beta}_0 - \hat{\beta}_1 x_i\)</span> which approximate the <span class="math inline">\(\epsilon_i\)</span> if the model fits (otherwise it’s not clear what we’re computing). Recalling that the variance of the errors is the “average squared deviation from the mean”, we would love to compute <span class="math display">\[\frac{1}{n}\sum (\epsilon_i - \mu_{\epsilon})^2 = \frac{1}{n}\sum \epsilon_i^2\]</span></p>
+<p>But since the <span class="math inline">\(\epsilon\)</span> are unknowable, we instead compute <span class="math display">\[\frac{1}{n-2}\sum (e_i - \bar{e})^2 = \frac{1}{n-2}\sum e_i^2 = \frac{1}{n-2}SSE = MSE\]</span></p>
+<p>The <span class="math inline">\(n-2\)</span> is to fix the fact that SSE is smaller than <span class="math inline">\(\sum \epsilon_i^2\)</span> by virtue of doing optimization.</p>
+<p>If the model fits, <span class="math inline">\(MSE\)</span> is estimating <span class="math inline">\(\sigma^2_{\epsilon}\)</span> (unbiasedly).</p>
+<p>A more general model is that <span class="math inline">\(y_i = \mu_{x_i} + \epsilon_i\)</span>, and this model certainly fits (though requires estimating a lot more parameters than 2, one for each unique value of <span class="math inline">\(x\)</span> in the data set. Also, it is unable to predict observations at <span class="math inline">\(x\)</span> variables you haven’t seen yet). We can once again compute residuals in this model, <span class="math inline">\(e_i^*=y_i-\bar{y}_{x_i}\)</span>. We are going to need replications at some of the <span class="math inline">\(x\)</span> values to keep these from all being 0. Suppose that there are <span class="math inline">\(c\)</span> unique values of <span class="math inline">\(x\)</span> in the data set, with <span class="math inline">\(c &lt; n\)</span>.</p>
+<p>From these, we can compute <span class="math display">\[\frac{1}{n-c}\sum (e_i^* - \bar{e^*})^2 = \frac{1}{n-c}\sum e_i^{*2} = \frac{1}{n-c}SSPE = MSPE\]</span> which is certainly a (less stable) estimate of <span class="math inline">\(\sigma^2\)</span>. (Less stable because it’s based on less information due to having to estimate more parameters, but we know the model fits). PE stands for “pure error”.</p>
+<p>What shows up in the formal test of linearity is <span class="math inline">\(MSLF\)</span> (lack of fit) = <span class="math inline">\(\frac{1}{c-2} (SSE - SSPE)\)</span>. Aruge using the above facts and some simple algebra that <span class="math inline">\(MSLF\)</span> is also estimating <span class="math inline">\(\sigma^2_{\epsilon}\)</span>.</p>
+<p>As a consequence, argue that the F statistic used should be about 1 if the null (linear model is appropriate) is true.</p>
+</section>
+<section id="section-1" class="level1">
+<h1>2.</h1>
+<p>The sakai site contains a data set consisting of brain mass to body mass for 27(ish) species. Fit a model predicting brain mass based on body mass, and additionally include a confidence interval and prediction interval (to be introduced on Tuesday, you’ll be able to steal code from those lecture notes). Fully justify and interpret your model, writing in complete sentences.</p>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -355,6 +418,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   } else {
     toggleColorMode(false);
   }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
