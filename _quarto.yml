@@ -18,14 +18,6 @@ website:
             href: wta.html
           - text: "Taylor Swift and Kacey Musgraves Lyrical ANOVA"
             href: swift.qmd
-      - text: "Data Visualization"
-        menu: 
-         - text: "Olympics"
-           href: olympics.html
-         - text: "Premier League"
-           href: premierleague.html
-         - text: "Shakespeare"
-           href: shakespeare.html
       - text: "Data Science Projects"
         menu:
           - text: "Final Presentation"
@@ -36,6 +28,18 @@ website:
             href: miniproject3.html
           - text: "Text Analysis"
             href: miniproject2.html
+      - text: "Machine Learning"
+        menu: 
+          - text: "Kaggle Give Me Some Credit"
+            href: kaggle_gmsc.qmd
+      - text: "Data Visualization"
+        menu: 
+         - text: "Olympics"
+           href: olympics.html
+         - text: "Premier League"
+           href: premierleague.html
+         - text: "Shakespeare"
+           href: shakespeare.html
 
 format:
   html:
