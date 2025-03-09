@@ -10,8 +10,6 @@ website:
         href: index.qmd
       - text: "Statistical Analyses"
         menu: 
-          - text: "MLB Bat Speed and Swing Length"
-            href: mlb_pdf.qmd
           - text: "How to Win in Tennis - ATP"
             href: atp.html
           - text: "Height and Serve Performance in Tennis - WTA"
@@ -29,7 +27,11 @@ website:
           - text: "Foundations of Data Science Final Presentation"
             href: presentation.html
       - text: "Machine Learning"
-        menu: 
+        menu:
+          - text: "MLB Bat Speed and Swing Length"
+            href: mlb_pdf.qmd
+          - text: "Text Message Classification"
+            href: text.qmd
           - text: "Kaggle Give Me Some Credit"
             href: kaggle_gmsc.qmd
       - text: "Data Visualization"
