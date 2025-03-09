@@ -12,8 +12,10 @@ website:
         menu: 
           - text: "MLB Bat Speed and Swing Length"
             href: mlb_pdf.qmd
-          - text: "How to Win in Tennis"
+          - text: "How to Win in Tennis - ATP"
             href: atp.html
+          - text: "Height and Serve Performance in Tennis - WTA"
+            href: wta.html
       - text: "Data Visualization"
         menu: 
          - text: "Olympics"
