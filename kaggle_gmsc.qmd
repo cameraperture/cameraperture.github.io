@@ -1,0 +1,11 @@
+---
+title: "Kaggle Competition - Give Me Some Credit"
+author: "Kamden Baeer, Charlotte Imbert, Quinn Link, Connor Squellati"
+date: "November 27, 2023"
+---
+
+Competition link: <https://www.kaggle.com/c/GiveMeSomeCredit>
+
+<iframe src="docs/kaggle_gmsc.pdf" width="100%" height="600px">
+
+</iframe>
