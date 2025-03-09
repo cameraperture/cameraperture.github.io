@@ -12,12 +12,12 @@ website:
         menu: 
           - text: "MLB Bat Speed and Swing Length"
             href: mlb_pdf.qmd
-          - text: "Taylor Swift and Kacey Musgraves Lyrical Anova"
-          - href: swift.qmd
           - text: "How to Win in Tennis - ATP"
             href: atp.html
           - text: "Height and Serve Performance in Tennis - WTA"
             href: wta.html
+          - text: "Taylor Swift and Kacey Musgraves Lyrical ANOVA"
+            href: swift.qmd
       - text: "Data Visualization"
         menu: 
          - text: "Olympics"
