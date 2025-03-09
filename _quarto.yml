@@ -20,14 +20,14 @@ website:
             href: swift.qmd
       - text: "Data Science Projects"
         menu:
-          - text: "Final Presentation"
-            href: presentation.html
           - text: "SQL"
             href: project4.html
           - text: "Permutation"
             href: miniproject3.html
           - text: "Text Analysis"
             href: miniproject2.html
+          - text: "Foundations of Data Science Final Presentation"
+            href: presentation.html
       - text: "Machine Learning"
         menu: 
           - text: "Kaggle Give Me Some Credit"
