@@ -28,12 +28,9 @@ website:
             href: presentation.html
       - text: "Machine Learning"
         menu:
-          - text: "MLB Bat Speed and Swing Length"
-            menu:
-              - text: "Analysis Report"
-                href: mlb_pdf.qmd
-              - text: "Shiny Dashboard"
-                href: http://cameraperture.shinyapps.io/shiny_app
+          - text: "MLB Bat Speed and Swing Length - Analysis Report"
+            href: mlb_pdf.qmd
+          - text: "MLB Bat Speed and Swing Length - Shiny Dashboard"
           - text: "Text Message Classification"
             href: text.qmd
           - text: "Kaggle Give Me Some Credit"
