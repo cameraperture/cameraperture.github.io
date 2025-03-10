@@ -29,7 +29,11 @@ website:
       - text: "Machine Learning"
         menu:
           - text: "MLB Bat Speed and Swing Length"
-            href: mlb_pdf.qmd
+            menu:
+              - text: "Analysis Report"
+                href: mlb_pdf.qmd
+              - text: "Shiny Dashboard"
+                href: http://cameraperture.shinyapps.io/shiny_app
           - text: "Text Message Classification"
             href: text.qmd
           - text: "Kaggle Give Me Some Credit"
