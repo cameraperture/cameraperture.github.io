@@ -123,10 +123,6 @@ div.csl-indent {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-statistical-analyses">    
         <li>
-    <a class="dropdown-item" href="./mlb_pdf.html">
- <span class="dropdown-text">MLB Bat Speed and Swing Length</span></a>
-  </li>  
-        <li>
     <a class="dropdown-item" href="./atp.html">
  <span class="dropdown-text">How to Win in Tennis - ATP</span></a>
   </li>  
@@ -137,6 +133,52 @@ div.csl-indent {
         <li>
     <a class="dropdown-item" href="./swift.html">
  <span class="dropdown-text">Taylor Swift and Kacey Musgraves Lyrical ANOVA</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-science-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data Science Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-science-projects">    
+        <li>
+    <a class="dropdown-item" href="./project4.html">
+ <span class="dropdown-text">SQL</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./miniproject3.html">
+ <span class="dropdown-text">Permutation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./miniproject2.html">
+ <span class="dropdown-text">Text Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./presentation.html">
+ <span class="dropdown-text">Foundations of Data Science Final Presentation</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-machine-learning" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Machine Learning</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-machine-learning">    
+        <li>
+    <a class="dropdown-item" href="./mlb_pdf.html">
+ <span class="dropdown-text">MLB Bat Speed and Swing Length - Analysis Report</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://cameraperture.shinyapps.io/shiny_app/">
+ <span class="dropdown-text">MLB Bat Speed and Swing Length - Shiny Dashboard</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./text.html">
+ <span class="dropdown-text">Text Message Classification</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./kaggle_gmsc.html">
+ <span class="dropdown-text">Kaggle Give Me Some Credit</span></a>
   </li>  
     </ul>
   </li>
@@ -156,29 +198,6 @@ div.csl-indent {
         <li>
     <a class="dropdown-item" href="./shakespeare.html">
  <span class="dropdown-text">Shakespeare</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-science-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Data Science Projects</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-science-projects">    
-        <li>
-    <a class="dropdown-item" href="./presentation.html">
- <span class="dropdown-text">Final Presentation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./project4.html">
- <span class="dropdown-text">SQL</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./miniproject3.html">
- <span class="dropdown-text">Permutation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./miniproject2.html">
- <span class="dropdown-text">Text Analysis</span></a>
   </li>  
     </ul>
   </li>
@@ -248,9 +267,7 @@ div.csl-indent {
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>With an off-season only a month long and a loaded tournament schedule year-round, professional tennis players on the Association of Tennis Professionals (ATP) Tour have limited practice time to improve their game. Understanding how particular match statistics influence a player’s winning percentage can help ‘to determine the match statistics to which coaches should attend in an effort to mould elite professional players’ during this scarce practice time <span class="citation" data-cites="reid2010">(<a href="#ref-reid2010" role="doc-biblioref">Reid, McMurtrie, and Crespo 2010</a>)</span>. A greater winning percentage leads to gains in ATP world ranking points, which results in direct entry to more prestigious tournaments and consequently increases financial gains through prize money. This is of great importance because of the high annual cost of travel, coaching and equipment, which ‘can total between $121,000 and $197,000 USD’ for male professionals <span class="citation" data-cites="reid2014">(<a href="#ref-reid2014" role="doc-biblioref">Reid et al. 2014</a>)</span>. Only an elite few earn lucrative sponsorship deals, meaning that the majority of tennis professionals must rely on prize money to finance both their life on tour and their life after retirement from professional tennis.</p>
-<p>With an off-season only a month long and a loaded tournament schedule year-round, professional tennis players on the Association of Tennis Professionals (ATP) Tour have limited practice time to improve their game. Understanding how particular match statistics influence a player’s winning percentage can help ‘to determine the match statistics to which coaches should attend in an effort to mould elite professional players’ during this scarce practice time <span class="citation" data-cites="reid2010">(<a href="#ref-reid2010" role="doc-biblioref">Reid, McMurtrie, and Crespo 2010</a>)</span>. A greater winning percentage leads to gains in ATP world ranking points, which results in direct entry to more prestigious tournaments and consequently increases financial gains through prize money. This is of great importance because of the high annual cost of travel, coaching and equipment, which ‘can total between $121,000 and $197,000 USD’ for male professionals <span class="citation" data-cites="reid2014">(<a href="#ref-reid2014" role="doc-biblioref">Reid et al. 2014</a>)</span>. Only an elite few earn lucrative sponsorship deals, meaning that the majority of tennis professionals must rely on prize money to finance both their life on tour and their life after retirement from professional tennis.</p>
 <p>Previous analysis of ATP Tour data from the 2007 season carried out by Reid et al.&nbsp;(2010) observed the relationship between 14 tennis match statistics and a player’s world ranking <span class="citation" data-cites="reid2010">(<a href="#ref-reid2010" role="doc-biblioref">Reid, McMurtrie, and Crespo 2010</a>)</span>. They found that second serve return points won and second serve points won were the most significant predictors of a player’s world ranking. The second serve statistic provides insight on a player’s ability to win points that generally wouldn’t be won: servers take less risk when hitting second serves, as an error here automatically loses them the point. Thus, these are often weaker and less well-placed than first serves, giving the returner a better chance of returning the serve and of winning the point, hence the value of looking at the second serve return statistic as well. In addition to these serve and return statistics, this study will consider players’ winners to unforced error ratio, which is a good indicator of both tactical aggressiveness and consistency, and the percentage of points played at the net, which is another measure of aggressiveness. These statistics were not considered in Reid et al.’s (2010) study <span class="citation" data-cites="reid2010">(<a href="#ref-reid2010" role="doc-biblioref">Reid, McMurtrie, and Crespo 2010</a>)</span>. This analysis will also differ from the aforementioned study in that the response variable observed will be winning percentage rather than world ranking. Additionally, player age and height will be included in our selection of explanatory variables.</p>
-<p>Previous literature suggests the presence of a height advantage in men’s professional tennis: in Ovaska et al.’s (2014) analysis of ATP match data from 2000 to 2009, it was found that ‘a higher ranked taller player was 3.1% more likely to win, other things constant,’ than a shorter player <span class="citation" data-cites="ovaska2014">(<a href="#ref-ovaska2014" role="doc-biblioref">Ovaska, Sumell, and Sumell 2014</a>)</span>. However, this ‘advantage diminishes with increasing height’ as at very tall heights players tend to lose mobility <span class="citation" data-cites="ovaska2014">(<a href="#ref-ovaska2014" role="doc-biblioref">Ovaska, Sumell, and Sumell 2014</a>)</span>. The same study found that ‘higher ranked older players have a disadvantage over their younger opponents’ and that ‘the larger the disparity in age, the larger the probability that the older player actually loses’ <span class="citation" data-cites="ovaska2014">(<a href="#ref-ovaska2014" role="doc-biblioref">Ovaska, Sumell, and Sumell 2014</a>)</span>. Of course, a coach and player cannot work on changing height or age, but this previous literature suggests that these factors should be taken into account when attempting to predict a male professional tennis player’s winning percentage.</p>
 <p>Previous literature suggests the presence of a height advantage in men’s professional tennis: in Ovaska et al.’s (2014) analysis of ATP match data from 2000 to 2009, it was found that ‘a higher ranked taller player was 3.1% more likely to win, other things constant,’ than a shorter player <span class="citation" data-cites="ovaska2014">(<a href="#ref-ovaska2014" role="doc-biblioref">Ovaska, Sumell, and Sumell 2014</a>)</span>. However, this ‘advantage diminishes with increasing height’ as at very tall heights players tend to lose mobility <span class="citation" data-cites="ovaska2014">(<a href="#ref-ovaska2014" role="doc-biblioref">Ovaska, Sumell, and Sumell 2014</a>)</span>. The same study found that ‘higher ranked older players have a disadvantage over their younger opponents’ and that ‘the larger the disparity in age, the larger the probability that the older player actually loses’ <span class="citation" data-cites="ovaska2014">(<a href="#ref-ovaska2014" role="doc-biblioref">Ovaska, Sumell, and Sumell 2014</a>)</span>. Of course, a coach and player cannot work on changing height or age, but this previous literature suggests that these factors should be taken into account when attempting to predict a male professional tennis player’s winning percentage.</p>
 <p>For this study, we will analyze singles match data from the 2022 ATP Tour to attempt to build a model predicting a player’s match winning percentage in a season based on age, height and 4 match statistics. We aim to show the effect of changes in each match statistic on a touring professional’s winning percentage at a certain height and age, providing guidance for coaches and players on which tactical aspects to work on. The data and variables we will consider will be covered in the methods section, model fitting and inference will be found in the data analysis section, and the conclusion will summarize findings and comment on possible model improvements.</p>
 </section>
