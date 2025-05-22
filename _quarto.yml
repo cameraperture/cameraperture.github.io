@@ -37,7 +37,9 @@ website:
           - text: "Kaggle Give Me Some Credit"
             href: kaggle_gmsc.qmd
       - text: "Data Visualization"
-        menu: 
+        menu:
+         - text: " Global Tuberculosis Mortality"
+           href: https://cameraperture.shinyapps.io/dssi_app/
          - text: "Olympics"
            href: olympics.html
          - text: "Premier League"
