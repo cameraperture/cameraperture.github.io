@@ -11,9 +11,9 @@ website:
       - text: "Statistical Analyses"
         menu: 
           - text: "How to Win in Tennis - ATP"
-            href: atp.html
+            href: atp.qmd
           - text: "Height and Serve Performance in Tennis - WTA"
-            href: wta.html
+            href: wta.qmd
           - text: "Taylor Swift and Kacey Musgraves Lyrical ANOVA"
             href: swift.qmd
       - text: "Machine Learning Projects"
@@ -31,21 +31,21 @@ website:
          - text: "MLB Bat Speed and Swing Length - Shiny Dashboard"
            href: https://cameraperture.shinyapps.io/shiny_app/
          - text: "Premier League Fouls"
-           href: premierleague.html
+           href: premierleague.qmd
          - text: "Shakespeare Dialogue"
-           href: shakespeare.html
+           href: shakespeare.qmd
          - text: "Olympics Trends"
-           href: olympics.html
+           href: olympics.qmd
       - text: "Data Science Coursework Projects"
         menu:
           - text: "Acoustic Analytics in SQL"
-            href: project4.html
+            href: project4.qmd
           - text: "Home Advantage in English Women's Football"
-            href: miniproject3.html
+            href: miniproject3.qmd
           - text: "30 Years of American Anxieties"
-            href: miniproject2.html
+            href: miniproject2.qmd
           - text: "Foundations of Data Science Final Presentation"
-            href: presentation.html
+            href: presentation.qmd
 
 format:
   html:

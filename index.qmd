@@ -42,5 +42,6 @@ Representing Pomona College at DataFest @ UCLA in 2023!
 <div class="side-by-side">
 ![](dssi_datathon.jpg){width=45%}
 ![](csas.jpg){width=35%}
-Winning 2nd Prize at Harvey Mudd College's DSSI Datathon (left) and presenting my analysis of MLB bat speed and swing length at the CSAS conference at Yale in 2025 (right)
 </div>
+Winning 2nd Prize at Harvey Mudd College's DSSI Datathon (left) and presenting my analysis of MLB bat speed and swing length at the CSAS conference at Yale in 2025 (right)
+

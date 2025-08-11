@@ -2,15 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Charlotte Imbert">
 <meta name="dcterms.date" content="2024-11-04">
-<meta name="description" content="Using a permutation test to produce a visual lineup protocol on English Women’s Football data">
+<meta name="description" content="Using permutation testing and iteration to produce a visual lineup protocol on English Women’s Football data">
 
-<title>Charlotte Imbert - Permutation Testing, Iteration and Visual Inference</title>
+<title>Is There a Home Advantage in Women’s Professional Football? – Charlotte Imbert</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -72,12 +72,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-530bf8e59df25186f8bffdc63bad3503.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-fc69c27516b785ffb5db61c6a6e66aa6.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -132,65 +132,96 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-statistical-analyses" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-statistical-analyses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Statistical Analyses</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-statistical-analyses">    
         <li>
-    <a class="dropdown-item" href="./mlb_pdf.html">
- <span class="dropdown-text">MLB Bat Speed and Swing Length</span></a>
+    <a class="dropdown-item" href="./atp.html">
+ <span class="dropdown-text">How to Win in Tennis - ATP</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./atp.html">
- <span class="dropdown-text">How to Win in Tennis</span></a>
+    <a class="dropdown-item" href="./wta.html">
+ <span class="dropdown-text">Height and Serve Performance in Tennis - WTA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./swift.html">
+ <span class="dropdown-text">Taylor Swift and Kacey Musgraves Lyrical ANOVA</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-visualization" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-machine-learning-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Machine Learning Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-machine-learning-projects">    
+        <li>
+    <a class="dropdown-item" href="./mlb_pdf.html">
+ <span class="dropdown-text">MLB Bat Speed and Swing Length - Analysis Report</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./text.html">
+ <span class="dropdown-text">Text Message Classification</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./kaggle_gmsc.html">
+ <span class="dropdown-text">Bank Loan Default Prediction</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-visualization" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Data Visualization</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-data-visualization">    
         <li>
-    <a class="dropdown-item" href="./olympics.html">
- <span class="dropdown-text">Olympics</span></a>
+    <a class="dropdown-item" href="https://cameraperture.shinyapps.io/dssi_app/">
+ <span class="dropdown-text">Global Tuberculosis Mortality Dashboard</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://cameraperture.shinyapps.io/shiny_app/">
+ <span class="dropdown-text">MLB Bat Speed and Swing Length - Shiny Dashboard</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./premierleague.html">
- <span class="dropdown-text">Premier League</span></a>
+ <span class="dropdown-text">Premier League Fouls</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./shakespeare.html">
- <span class="dropdown-text">Shakespeare</span></a>
+ <span class="dropdown-text">Shakespeare Dialogue</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./olympics.html">
+ <span class="dropdown-text">Olympics Trends</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-science-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Data Science Projects</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-data-science-coursework-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Data Science Coursework Projects</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-science-projects">    
-        <li>
-    <a class="dropdown-item" href="./presentation.html">
- <span class="dropdown-text">Final Presentation</span></a>
-  </li>  
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-data-science-coursework-projects">    
         <li>
     <a class="dropdown-item" href="./project4.html">
- <span class="dropdown-text">SQL</span></a>
+ <span class="dropdown-text">Acoustic Analytics in SQL</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./miniproject3.html">
- <span class="dropdown-text">Permutation</span></a>
+ <span class="dropdown-text">Home Advantage in English Women’s Football</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./miniproject2.html">
- <span class="dropdown-text">Text Analysis</span></a>
+ <span class="dropdown-text">30 Years of American Anxieties</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./presentation.html">
+ <span class="dropdown-text">Foundations of Data Science Final Presentation</span></a>
   </li>  
     </ul>
   </li>
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
@@ -222,12 +253,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Permutation Testing, Iteration and Visual Inference</h1>
+<h1 class="title">Is There a Home Advantage in Women’s Professional Football?</h1>
 </div>
 
 <div>
   <div class="description">
-    <p>Using a permutation test to produce a visual lineup protocol on English Women’s Football data</p>
+    <p>Using permutation testing and iteration to produce a visual lineup protocol on English Women’s Football data</p>
   </div>
 </div>
 
@@ -616,18 +647,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -659,7 +679,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -667,7 +707,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -764,7 +804,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
