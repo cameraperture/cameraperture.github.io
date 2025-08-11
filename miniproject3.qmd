@@ -1,7 +1,7 @@
 ---
-title: "Permutation Testing, Iteration and Visual Inference"
+title: "Is There a Home Advantage in Women's Professional Football?"
 description: |
-  Using a permutation test to produce a visual lineup protocol on English Women's Football data
+  Using permutation testing and iteration to produce a visual lineup protocol on English Women's Football data
 author: Charlotte Imbert
 date: November 4, 2024
 format: html

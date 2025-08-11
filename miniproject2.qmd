@@ -1,5 +1,5 @@
 ---
-title: "Text Data Analysis Using Regular Expressions"
+title: "What do Americans Worry About? Analyzing Dear Abby Stories Using Regular Expressions"
 description: |
   Uncovering trends in text data from The Pudding's "Dear Abby" stories using regular expression matching
 author: Charlotte Imbert
