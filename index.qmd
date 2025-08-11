@@ -31,9 +31,8 @@ I'm fluent in four languages (English, French, Spanish, Portuguese) and love col
 In my spare time, you can find me playing pickleball tournaments, hiking in the California nature, performing stand-up comedy, playing trivia, or hanging out with friends.
 
 <div class="side-by-side">
-![](wimby.jpg){width=25%}  
-![](wimby2.jpg){width=25%}
-
+  <img src="wimby.jpg" style="width:35%;" alt="Wimbledon 2022" />
+  <img src="wimby2.jpg" style="width:35%;" alt="Wimbledon 2023" />
 </div>
 Working at Wimbledon with IBM in 2022 (left) and 2023 (right)
 
