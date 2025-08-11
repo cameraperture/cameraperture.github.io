@@ -28,7 +28,7 @@ website:
         menu:
          - text: "Global Tuberculosis Mortality Dashboard"
            href: https://cameraperture.shinyapps.io/dssi_app/
-         - text: "MLB Bat Speed and Swing Length - Shiny Dashboard"
+         - text: "MLB Bat Speed and Swing Length - Dashboard"
            href: https://cameraperture.shinyapps.io/shiny_app/
          - text: "Premier League Fouls"
            href: premierleague.qmd
